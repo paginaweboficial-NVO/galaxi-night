@@ -283,30 +283,29 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
 .resume b{font-weight:400;color:var(--violet-bright)}
 
 /* ---------- PAGO ---------- */
-.step{display:flex;align-items:center;gap:9px;margin:18px 0 9px;text-align:left}
-.step i{width:21px;height:21px;border-radius:50%;border:1px solid var(--violet);display:grid;place-items:center;
-  font-style:normal;font-size:10px;color:var(--violet-bright);flex:none}
+.step{display:flex;align-items:center;gap:9px;margin:16px 0 9px;text-align:left}
 .step b{font-weight:400;font-size:clamp(8.5px,2.3vw,11px);letter-spacing:.2em;color:#fff}
-.amount{border-radius:14px;border:1px solid var(--violet);background:rgba(45,16,84,.42);padding:clamp(12px,3vw,16px);
-  display:grid;gap:4px;box-shadow:0 0 22px rgba(176,108,245,.25)}
-.amount span{font-size:clamp(7.5px,2vw,9.5px);letter-spacing:.24em;color:var(--muted)}
-.amount b{font-size:clamp(26px,8vw,40px);font-weight:400;color:var(--violet-bright);line-height:1.1;
+.step em{font-style:normal;font-size:clamp(7.5px,2vw,9.5px);letter-spacing:.14em;color:var(--muted)}
+.paybox{margin-top:18px;border-radius:16px;overflow:hidden;border:1px solid rgba(176,108,245,.45);
+  background:linear-gradient(160deg, rgba(46,18,86,.7), rgba(13,5,28,.72));
+  box-shadow:0 0 28px rgba(176,108,245,.22);text-align:left}
+.paybox .amt{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;
+  padding:clamp(14px,3.4vw,19px) clamp(15px,3.6vw,20px);border-bottom:1px solid rgba(176,108,245,.22)}
+.paybox .amt span{font-size:clamp(7.5px,2vw,9.5px);letter-spacing:.24em;color:var(--muted)}
+.paybox .amt b{font-size:clamp(25px,7.4vw,38px);font-weight:400;color:var(--violet-bright);line-height:1;
   font-variant-numeric:tabular-nums;text-shadow:0 0 22px rgba(176,108,245,.55)}
-.bank{display:grid;gap:7px;margin-top:9px}
-.brow{display:flex;width:100%;align-items:center;justify-content:space-between;gap:10px;text-align:left;
-  padding:clamp(10px,2.4vw,13px) 15px;border-radius:12px;border:1px solid rgba(176,108,245,.22);
-  background:rgba(18,8,34,.6);transition:border-color .25s, background .25s}
-button.brow:hover{border-color:var(--violet);background:rgba(45,16,84,.5)}
+.brow{display:flex;width:100%;align-items:center;justify-content:space-between;gap:12px;text-align:left;
+  padding:clamp(11px,2.6vw,14px) clamp(15px,3.6vw,20px);border-bottom:1px solid rgba(176,108,245,.14);
+  transition:background .25s}
+button.brow:hover{background:rgba(109,40,217,.26)}
+.brow:last-child{border-bottom:0}
 .brow .k{font-size:clamp(7.5px,2vw,9.5px);letter-spacing:.2em;color:var(--muted);flex:none}
 .brow .v{font-size:clamp(10px,2.6vw,13px);letter-spacing:.06em;color:#fff;text-align:right;min-width:0;
   word-break:break-word;font-variant-numeric:tabular-nums}
+.brow.hi{background:rgba(109,40,217,.22)}
+.brow.hi .k{color:var(--violet-bright)}
+.brow.hi .v{font-size:clamp(13px,3.8vw,17px);letter-spacing:.2em;color:var(--violet-bright)}
 .brow svg{width:14px;height:14px;color:var(--violet);flex:none}
-.concept{display:flex;width:100%;align-items:center;justify-content:space-between;gap:10px;
-  padding:clamp(12px,2.8vw,15px) 16px;border-radius:12px;border:1px dashed rgba(176,108,245,.55);
-  background:rgba(45,16,84,.35);transition:background .25s}
-.concept:hover{background:rgba(45,16,84,.55)}
-.concept b{font-weight:400;font-size:clamp(13px,4vw,18px);letter-spacing:.24em;color:var(--violet-bright)}
-.concept svg{width:15px;height:15px;color:var(--violet);flex:none}
 .drop{margin-top:14px;display:grid;justify-items:center;gap:8px;padding:clamp(16px,4vw,24px) 16px;border-radius:14px;
   border:1px dashed rgba(176,108,245,.5);background:rgba(28,10,52,.35);cursor:pointer;transition:background .25s, border-color .25s}
 .drop:hover{background:rgba(45,16,84,.5);border-color:var(--violet)}
@@ -388,6 +387,19 @@ button.brow:hover{border-color:var(--violet);background:rgba(45,16,84,.5)}
 .order .oi b{display:block;font-weight:400;font-size:clamp(11px,3vw,14px);letter-spacing:.22em;color:var(--violet-bright)}
 .order .oi span{display:block;margin-top:5px;font-size:clamp(8px,2.1vw,10px);letter-spacing:.1em;color:var(--muted)}
 .order .oe{display:grid;justify-items:end;gap:7px;flex:none}
+.order[data-pend="1"]{cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.order[data-press="1"]{transform:scale(.97);border-color:rgba(255,120,150,.6);background:rgba(70,16,40,.45)}
+.order[data-confirm="1"]{border-color:#ff9db5;background:rgba(70,14,36,.6)}
+.order[data-confirm="1"] .oi,.order[data-confirm="1"] .oe{display:none}
+.delbar{display:none;width:100%;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.order[data-confirm="1"] .delbar{display:flex}
+.delbar span{font-size:clamp(8px,2.2vw,10px);letter-spacing:.16em;color:#ff9db5}
+.delbar .dbtn{padding:8px 14px;border-radius:999px;font-size:clamp(7.5px,2vw,9.5px);letter-spacing:.16em;
+  border:1px solid rgba(255,157,181,.5);color:#ff9db5;transition:background .25s}
+.delbar .dbtn:hover{background:rgba(255,157,181,.16)}
+.delbar .dbtn.no{border-color:rgba(176,108,245,.45);color:var(--muted)}
+.ordhint{margin:12px 0 0;font-size:clamp(7.5px,2vw,9.5px);letter-spacing:.14em;color:rgba(185,168,207,.6);
+  text-align:center;line-height:1.8}
 .empty{margin-top:20px;padding:clamp(18px,4vw,26px);border-radius:14px;border:1px dashed rgba(176,108,245,.35);
   background:rgba(18,8,34,.45);text-align:center}
 .empty p{margin:0;font-size:clamp(9px,2.4vw,11px);letter-spacing:.14em;color:var(--muted);line-height:1.8}
@@ -773,30 +785,24 @@ button.brow:hover{border-color:var(--violet);background:rgba(45,16,84,.5)}
         <h2 class="title" data-rv style="--d:220ms">TRANSFERENCIA</h2>
       </div>
 
-      <div data-rv style="--d:360ms">
-        <p class="step"><i>1</i><b>TRANSFIERE ESTE MONTO</b></p>
-        <div class="amount"><span>MONTO EXACTO</span><b id="montoPago">$250</b></div>
-        <div class="bank">
-          <div class="brow"><span class="k">BANCO</span><span class="v">BBVA</span></div>
-          <div class="brow"><span class="k">TITULAR</span><span class="v">GALAXI NIGHT</span></div>
-          <button class="brow" type="button" data-copy="012914000000000000">
-            <span class="k">CLABE</span>
-            <span class="v">012 914 0000 0000 0000</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
-          </button>
-        </div>
-      </div>
-
-      <div data-rv style="--d:440ms">
-        <p class="step"><i>2</i><b>PON ESTE CONCEPTO</b></p>
-        <button class="concept" type="button" id="copyRef">
-          <b id="refPago">GN-0000</b>
+      <div class="paybox" data-rv style="--d:360ms">
+        <div class="amt"><span>MONTO EXACTO</span><b id="montoPago">$250</b></div>
+        <div class="brow"><span class="k">BANCO</span><span class="v">BBVA</span></div>
+        <div class="brow"><span class="k">TITULAR</span><span class="v">GALAXI NIGHT</span></div>
+        <button class="brow" type="button" data-copy="012914000000000000">
+          <span class="k">CLABE</span>
+          <span class="v">012 914 0000 0000 0000</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+        </button>
+        <button class="brow hi" type="button" id="copyRef">
+          <span class="k">CONCEPTO</span>
+          <span class="v" id="refPago">GN-0000</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
         </button>
       </div>
 
-      <div data-rv style="--d:520ms">
-        <p class="step"><i>3</i><b>SUBE TU COMPROBANTE</b></p>
+      <div data-rv style="--d:460ms">
+        <p class="step"><b>SUBE TU COMPROBANTE</b></p>
         <label class="drop" id="drop">
           <input type="file" id="file" accept="image/*,application/pdf">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
@@ -1297,18 +1303,77 @@ button.brow:hover{border-color:var(--violet);background:rgba(45,16,84,.5)}
       cont.innerHTML='<div class="empty"><p>AÚN NO HAS COMPRADO BOLETOS EN ESTE DISPOSITIVO.</p></div>';
       return;
     }
-    var html='';
+    var html='', hayPend=false;
     for(var i=0;i<l.length;i++){
-      var p=l[i], st=ESTADOS[p.estado]||ESTADOS.pendiente;
-      html+='<button class="order" type="button" data-ref="'+p.ref+'">'+
+      var p=l[i], st=ESTADOS[p.estado]||ESTADOS.pendiente, pend=(p.estado==='pendiente');
+      if(pend) hayPend=true;
+      html+='<div class="order" role="button" tabindex="0" data-ref="'+p.ref+'"'+(pend?' data-pend="1"':'')+'>'+
         '<span class="oi"><b>'+p.ref+'</b><span>'+p.qty+(p.qty>1?' PERSONAS · ':' PERSONA · ')+money(p.total)+'</span></span>'+
         '<span class="oe"><span class="badge '+st.badge+'"><i></i>'+st.txt+'</span></span>'+
-      '</button>';
+        (pend?'<span class="delbar"><span>¿QUITAR ESTE BOLETO?</span>'+
+          '<span><button class="dbtn no" type="button" data-del-no>CANCELAR</button> '+
+          '<button class="dbtn" type="button" data-del-yes>ELIMINAR</button></span></span>':'')+
+      '</div>';
     }
-    cont.innerHTML=html;
+    cont.innerHTML=html+(hayPend?'<p class="ordhint">MANTÉN PRESIONADO UN BOLETO SIN COMPROBANTE PARA QUITARLO DE ESTE DISPOSITIVO.</p>':'');
   }
-  document.getElementById('orders').addEventListener('click',function(e){
+  /* mantener presionado para quitar un boleto sin comprobante */
+  var pressT=null, pressRow=null, longPressed=false;
+  function limpiarPress(){
+    clearTimeout(pressT); pressT=null;
+    if(pressRow){ pressRow.removeAttribute('data-press'); pressRow=null; }
+  }
+  function cerrarConfirm(){
+    var abiertos=document.querySelectorAll('#orders [data-confirm]');
+    for(var i=0;i<abiertos.length;i++) abiertos[i].removeAttribute('data-confirm');
+  }
+  var ordersEl=document.getElementById('orders');
+  ordersEl.addEventListener('pointerdown',function(e){
+    var row=e.target.closest('[data-pend="1"]');
+    if(!row||e.target.closest('.delbar')) return;
+    longPressed=false;
+    pressRow=row; row.setAttribute('data-press','1');
+    pressT=setTimeout(function(){
+      limpiarPress(); cerrarConfirm();
+      row.setAttribute('data-confirm','1');
+      longPressed=true;
+      if(navigator.vibrate) try{ navigator.vibrate(18); }catch(e2){}
+      fit('misboletos');
+    },520);
+  });
+  ordersEl.addEventListener('pointerup',limpiarPress);
+  ordersEl.addEventListener('pointerleave',limpiarPress);
+  ordersEl.addEventListener('pointercancel',limpiarPress);
+  ordersEl.addEventListener('pointermove',function(e){
+    if(pressT && (Math.abs(e.movementY)>4||Math.abs(e.movementX)>4)) limpiarPress();
+  });
+  ordersEl.addEventListener('contextmenu',function(e){
+    if(e.target.closest('[data-pend="1"]')) e.preventDefault();
+  });
+  ordersEl.addEventListener('keydown',function(e){
+    if(e.key!=='Enter'&&e.key!==' ') return;
+    var row=e.target.closest('[data-ref]'); if(!row) return;
+    e.preventDefault(); row.click();
+  });
+
+  ordersEl.addEventListener('click',function(e){
+    if(e.target.closest('[data-del-no]')){ cerrarConfirm(); fit('misboletos'); return; }
+    var si=e.target.closest('[data-del-yes]');
+    if(si){
+      var row=si.closest('[data-ref]'), r=row&&row.dataset.ref;
+      if(r&&pedidos[r]){
+        delete pedidos[r];
+        if(ref===r) ref='';
+        savePedidos();
+        toast('BOLETO '+r+' ELIMINADO');
+        fit('misboletos');
+      }
+      return;
+    }
+    if(longPressed){ longPressed=false; return; }
     var btn=e.target.closest('[data-ref]'); if(!btn) return;
+    if(btn.getAttribute('data-confirm')==='1') return;
+    cerrarConfirm();
     var p=buscarPedido(btn.dataset.ref); if(!p) return;
     if(p.estado==='pagado'){ mostrarPase(p); return; }
     ref=p.ref; qty=p.qty; render();
