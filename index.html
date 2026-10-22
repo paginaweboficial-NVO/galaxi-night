@@ -2,9 +2,11 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="description" content="Galaxi Night — Sábado 24 de octubre, Campeche. Una noche fuera de este mundo.">
 <meta name="theme-color" content="#05020b">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta property="og:title" content="Galaxi Night">
 <meta property="og:description" content="Sábado 24 de octubre · 9:00 PM · Campeche, Col. Bellavista">
 <meta property="og:type" content="website">
@@ -12,331 +14,358 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Michroma&family=Jost:wght@200;300;400;500;600&display=swap">
 <style>
-/* Layout: app de pantallas completas apiladas; fondo cósmico fijo (nebulosa + haces + multitud),
-   contenido en una columna central de 620px con reveals escalonados por pantalla. */
+/* Layout: deck de pantallas completas; cada sección ocupa exactamente el viewport,
+   se navega deslizando (touch/rueda/teclado) y el contenido se auto-escala para caber. */
 :root{
   --bg:#05020b;
-  --bg-deep:#0a0417;
   --violet:#b06cf5;
   --violet-bright:#d9a7ff;
-  --violet-deep:#6d28d9;
   --ink:#f6f1ff;
   --muted:#b9a8cf;
   --line:rgba(176,108,245,.28);
-  --panel:rgba(18,8,34,.62);
-  --glow:0 0 22px rgba(176,108,245,.55);
   --font-logo:'Michroma','Trebuchet MS',sans-serif;
   --font-display:'Jost','Avenir Next',Helvetica,sans-serif;
   --font-body:'Jost','Avenir Next',Helvetica,sans-serif;
+  --hdr:60px;
+  --foot:78px;
+  --vh:100vh;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased}
-body{overflow-x:hidden;min-height:100%}
+html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent}
 img{max-width:100%}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 a{color:inherit}
 ::selection{background:rgba(176,108,245,.4)}
 :focus-visible{outline:2px solid var(--violet-bright);outline-offset:3px;border-radius:6px}
 
-/* ---------- FONDO CÓSMICO ---------- */
-.sky{position:fixed;inset:0;z-index:0;overflow:hidden;background:
-  radial-gradient(120% 80% at 50% 0%, #2a0b4d 0%, #14052a 38%, #05020b 72%),
-  var(--bg);}
+/* ---------- FONDO ---------- */
+.sky{position:fixed;inset:0;z-index:0;overflow:hidden;
+  background:radial-gradient(120% 80% at 50% 0%, #2a0b4d 0%, #14052a 38%, #05020b 72%), var(--bg)}
 .stars{position:absolute;inset:0}
 .stars i{position:absolute;display:block;border-radius:50%;background:#fff;animation:twinkle linear infinite}
 @keyframes twinkle{0%,100%{opacity:.15}50%{opacity:.95}}
-.moon{position:absolute;left:50%;top:4%;width:min(78vw,420px);aspect-ratio:1;transform:translate(-50%,0);
+.moon{position:absolute;left:50%;top:2%;width:min(78vw,480px);aspect-ratio:1;transform:translate(-50%,0);
   border-radius:50%;background:
-   radial-gradient(circle at 68% 30%, rgba(190,140,255,.55), rgba(70,20,120,.42) 46%, rgba(10,3,22,0) 70%),
-   radial-gradient(circle at 35% 60%, rgba(120,60,200,.3), rgba(10,3,22,0) 62%);
-  filter:blur(1px);transition:transform 1.1s cubic-bezier(.22,1,.36,1),opacity 1.1s}
+   radial-gradient(circle at 68% 30%, rgba(190,140,255,.5), rgba(70,20,120,.4) 46%, rgba(10,3,22,0) 70%),
+   radial-gradient(circle at 35% 60%, rgba(120,60,200,.28), rgba(10,3,22,0) 62%);
+  filter:blur(1px);transition:transform 1s cubic-bezier(.22,1,.36,1)}
 .beams{position:absolute;inset:0;mix-blend-mode:screen}
-.beam{position:absolute;top:-8%;left:50%;width:clamp(26px,7vw,70px);height:120%;transform-origin:50% 0;
-  background:linear-gradient(to bottom, rgba(205,150,255,.55), rgba(150,80,240,.16) 42%, rgba(120,60,220,0) 78%);
-  filter:blur(7px);animation:sway 9s ease-in-out infinite alternate}
-.beam::after{content:"";position:absolute;top:-10px;left:50%;width:14px;height:14px;transform:translateX(-50%);
-  border-radius:50%;background:#fff;box-shadow:0 0 22px 10px rgba(205,150,255,.8)}
-@keyframes sway{from{filter:blur(7px) opacity(.75)}to{filter:blur(10px) opacity(1)}}
-.fog{position:absolute;inset:auto 0 0;height:62%;
-  background:radial-gradient(70% 100% at 50% 100%, rgba(140,70,230,.5), rgba(60,20,120,.22) 45%, rgba(5,2,11,0) 75%);
+.beam{position:absolute;top:-8%;left:50%;width:clamp(24px,6vw,64px);height:120%;transform-origin:50% 0;
+  background:linear-gradient(to bottom, rgba(205,150,255,.5), rgba(150,80,240,.14) 42%, rgba(120,60,220,0) 78%);
+  filter:blur(8px);animation:sway 9s ease-in-out infinite alternate}
+.beam::after{content:"";position:absolute;top:-10px;left:50%;width:12px;height:12px;transform:translateX(-50%);
+  border-radius:50%;background:#fff;box-shadow:0 0 20px 9px rgba(205,150,255,.75)}
+@keyframes sway{from{filter:blur(8px) opacity(.7)}to{filter:blur(11px) opacity(1)}}
+.fog{position:absolute;inset:auto 0 0;height:60%;
+  background:radial-gradient(70% 100% at 50% 100%, rgba(140,70,230,.45), rgba(60,20,120,.2) 45%, rgba(5,2,11,0) 75%);
   filter:blur(18px)}
-.crowd{position:absolute;left:50%;bottom:0;width:140%;max-width:none;transform:translateX(-50%);opacity:.95}
-.ridge{position:absolute;inset:auto 0 0;height:30vh;
-  background:linear-gradient(to top, #05020b 18%, rgba(5,2,11,.75) 48%, rgba(5,2,11,0));pointer-events:none}
-.vig{position:absolute;inset:0;background:radial-gradient(100% 70% at 50% 45%, rgba(0,0,0,0) 40%, rgba(0,0,0,.72));pointer-events:none}
+.crowd{position:absolute;left:50%;bottom:0;width:150%;max-width:none;transform:translateX(-50%);opacity:.95}
+.ridge{position:absolute;inset:auto 0 0;height:28%;
+  background:linear-gradient(to top, #05020b 16%, rgba(5,2,11,.72) 48%, rgba(5,2,11,0))}
+.vig{position:absolute;inset:0;background:radial-gradient(100% 70% at 50% 45%, rgba(0,0,0,0) 36%, rgba(0,0,0,.76))}
 
 /* ---------- HEADER ---------- */
-.topbar{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;gap:12px;
-  padding-top:calc(14px + env(safe-area-inset-top,0px));padding-bottom:14px;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
-  background:linear-gradient(to bottom, rgba(5,2,11,.96), rgba(5,2,11,.82) 70%, rgba(5,2,11,0));
-  border-bottom:1px solid rgba(176,108,245,.14)}
-.brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
-.brand svg{width:46px;height:auto;flex:none;filter:drop-shadow(0 0 8px rgba(176,108,245,.7))}
-.brand .wm{min-width:0}
-.brand .wm b{display:block;font-family:var(--font-logo);font-weight:400;font-size:clamp(13px,3.6vw,19px);
-  letter-spacing:.22em;line-height:1;white-space:nowrap}
-.brand .wm span{display:block;font-family:var(--font-logo);font-size:clamp(7px,2vw,10px);letter-spacing:.42em;
-  color:var(--violet);margin-top:5px}
-.pillbtn{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;
-  border:1px solid var(--violet);background:rgba(109,40,217,.18);font-size:11px;letter-spacing:.16em;
-  font-weight:500;white-space:nowrap;box-shadow:0 0 16px rgba(176,108,245,.35), inset 0 0 14px rgba(176,108,245,.14);
-  transition:transform .25s, box-shadow .25s, background .25s}
-.pillbtn:hover{transform:translateY(-1px);box-shadow:0 0 26px rgba(176,108,245,.6), inset 0 0 18px rgba(176,108,245,.22)}
-.pillbtn svg{width:14px;height:14px;flex:none}
-.burger{width:40px;height:34px;display:grid;align-content:center;gap:7px;flex:none}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;gap:10px;height:auto;
+  padding-top:calc(12px + env(safe-area-inset-top,0px));padding-bottom:12px;
+  padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px));
+  background:linear-gradient(to bottom, rgba(5,2,11,.96), rgba(5,2,11,.8) 70%, rgba(5,2,11,0));
+  border-bottom:1px solid rgba(176,108,245,.12)}
+.brand{display:flex;align-items:center;gap:9px;flex:1;min-width:0}
+.brand svg{width:clamp(34px,8vw,46px);height:auto;flex:none;filter:drop-shadow(0 0 8px rgba(176,108,245,.7))}
+.brand .wm b{display:block;font-family:var(--font-logo);font-weight:400;font-size:clamp(11px,3.2vw,18px);
+  letter-spacing:.2em;line-height:1;white-space:nowrap}
+.brand .wm span{display:block;font-family:var(--font-logo);font-size:clamp(6px,1.7vw,9px);letter-spacing:.4em;
+  color:var(--violet);margin-top:4px}
+.pillbtn{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;
+  border:1px solid var(--violet);background:rgba(109,40,217,.18);font-size:clamp(9px,2.4vw,11px);letter-spacing:.16em;
+  font-weight:500;white-space:nowrap;box-shadow:0 0 14px rgba(176,108,245,.32), inset 0 0 12px rgba(176,108,245,.12);
+  transition:transform .25s, box-shadow .25s}
+.pillbtn:hover{transform:translateY(-1px);box-shadow:0 0 24px rgba(176,108,245,.6)}
+.pillbtn svg{width:13px;height:13px;flex:none}
+.burger{width:38px;height:32px;display:grid;align-content:center;gap:6px;flex:none}
 .burger span{display:block;height:2px;background:#fff;border-radius:2px;transition:transform .3s,opacity .25s}
-body.menu-open .burger span:nth-child(1){transform:translateY(9px) rotate(45deg)}
+body.menu-open .burger span:nth-child(1){transform:translateY(8px) rotate(45deg)}
 body.menu-open .burger span:nth-child(2){opacity:0}
-body.menu-open .burger span:nth-child(3){transform:translateY(-9px) rotate(-45deg)}
+body.menu-open .burger span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
 
 /* ---------- DRAWER ---------- */
-.drawer{position:fixed;inset:0;z-index:39;pointer-events:none}
-.drawer .scrim{position:absolute;inset:0;background:rgba(3,1,8,.72);backdrop-filter:blur(6px);opacity:0;transition:opacity .35s}
+.drawer{position:fixed;inset:0;z-index:45;pointer-events:none}
+.drawer .scrim{position:absolute;inset:0;background:rgba(3,1,8,.74);backdrop-filter:blur(6px);opacity:0;transition:opacity .35s}
 .drawer nav{position:absolute;top:0;right:0;bottom:0;width:min(84vw,330px);
-  padding:calc(96px + env(safe-area-inset-top,0px)) max(22px,env(safe-area-inset-right,0px)) 32px 24px;
+  padding:calc(90px + env(safe-area-inset-top,0px)) max(22px,env(safe-area-inset-right,0px))
+          calc(26px + env(safe-area-inset-bottom,0px)) 24px;
   background:linear-gradient(200deg, #1b0a36, #0a0417 70%);border-left:1px solid var(--line);
-  transform:translateX(102%);transition:transform .45s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;gap:4px}
+  transform:translateX(102%);transition:transform .45s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;gap:2px;
+  overflow:auto}
 body.menu-open .drawer{pointer-events:auto}
 body.menu-open .drawer .scrim{opacity:1}
 body.menu-open .drawer nav{transform:none}
-.drawer a{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 4px;
-  border-bottom:1px solid rgba(176,108,245,.16);text-decoration:none;font-size:13px;letter-spacing:.2em;
+.drawer a{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 4px;
+  border-bottom:1px solid rgba(176,108,245,.16);text-decoration:none;font-size:12.5px;letter-spacing:.2em;
   color:var(--muted);transition:color .25s,padding-left .25s}
 .drawer a:hover,.drawer a[aria-current="true"]{color:#fff;padding-left:10px}
 .drawer a em{font-style:normal;font-size:10px;color:var(--violet);letter-spacing:.1em}
 .drawer .note{margin-top:auto;font-size:10px;letter-spacing:.18em;color:rgba(185,168,207,.6);line-height:2}
 
-/* ---------- SHELL / PANTALLAS ---------- */
-main{position:relative;z-index:10}
-.screen{display:none;min-height:100svh;
-  padding-top:calc(86px + env(safe-area-inset-top,0px));padding-bottom:70px;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.screen.is-active{display:block}
-.wrap{max-width:620px;margin:0 auto}
+/* ---------- DECK ---------- */
+.deck{position:fixed;top:0;left:0;right:0;height:var(--vh);z-index:10;touch-action:none}
+.screen{position:absolute;inset:0;display:none;align-items:center;justify-items:center;
+  padding-top:calc(var(--hdr) + env(safe-area-inset-top,0px));
+  padding-bottom:calc(var(--foot) + env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  overflow:hidden}
+.screen.is-active{display:grid}
+.wrap{width:100%;max-width:620px;transform-origin:center center;will-change:transform}
 .center{text-align:center}
+.screen.is-active .wrap{animation:enter .6s cubic-bezier(.16,1,.3,1) both}
+@keyframes enter{from{opacity:0;transform:translateY(var(--dir,34px))}to{opacity:1;transform:none}}
 
-/* Reveal de entrada */
-[data-rv]{opacity:0;transform:translateY(26px) scale(.985);filter:blur(6px)}
-.screen.is-active [data-rv]{animation:rise .95s cubic-bezier(.16,1,.3,1) forwards;animation-delay:var(--d,0ms)}
-@keyframes rise{to{opacity:1;transform:none;filter:none}}
-.screen.is-active .zoomin{animation:zoomin 1.3s cubic-bezier(.16,1,.3,1) forwards;animation-delay:var(--d,0ms)}
-@keyframes zoomin{from{opacity:0;transform:scale(.82) translateY(18px);filter:blur(10px)}to{opacity:1;transform:none;filter:none}}
+/* reveals escalonados */
+[data-rv]{opacity:0}
+.screen.is-active [data-rv]{animation:rise .85s cubic-bezier(.16,1,.3,1) both;animation-delay:var(--d,0ms)}
+@keyframes rise{from{opacity:0;transform:translateY(22px) scale(.985);filter:blur(5px)}to{opacity:1;transform:none;filter:none}}
+.screen.is-active .zoomin{animation:zoomin 1.1s cubic-bezier(.16,1,.3,1) both;animation-delay:var(--d,0ms)}
+@keyframes zoomin{from{opacity:0;transform:scale(.84) translateY(14px);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+
+/* ---------- PIE: DESLIZA + PUNTOS ---------- */
+.swipe{position:fixed;left:50%;transform:translateX(-50%);z-index:30;display:grid;justify-items:center;gap:8px;
+  bottom:calc(16px + env(safe-area-inset-bottom,0px));pointer-events:auto}
+.swipe .circ{width:clamp(38px,10vw,46px);aspect-ratio:1;border-radius:50%;border:1px solid var(--violet);
+  display:grid;place-items:center;animation:bob 2.2s ease-in-out infinite;
+  background:rgba(12,5,26,.5);box-shadow:0 0 18px rgba(176,108,245,.35)}
+.swipe .circ svg{width:16px;height:16px}
+.swipe small{font-size:clamp(8px,2.2vw,10px);letter-spacing:.34em;color:var(--muted)}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+.swipe[hidden]{display:none}
+.dots{position:fixed;right:max(10px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);z-index:30;
+  display:grid;gap:10px}
+.dots button{width:8px;height:8px;border-radius:50%;background:rgba(176,108,245,.3);
+  border:1px solid rgba(176,108,245,.5);transition:transform .3s, background .3s, box-shadow .3s}
+.dots button[aria-current="true"]{background:var(--violet-bright);transform:scale(1.5);box-shadow:0 0 12px rgba(176,108,245,.9)}
+.upcue{position:fixed;top:calc(var(--hdr) + env(safe-area-inset-top,0px) + 4px);left:50%;transform:translateX(-50%);
+  z-index:29;font-size:9px;letter-spacing:.3em;color:rgba(185,168,207,.5);pointer-events:none;
+  opacity:0;transition:opacity .4s}
+body.show-upcue .upcue{opacity:1}
 
 /* ---------- TIPOGRAFÍA ---------- */
-.eyebrow{font-size:clamp(9px,2.6vw,12px);letter-spacing:.42em;color:var(--muted);font-weight:300;margin:0}
-.rule{width:52px;height:1px;background:linear-gradient(90deg,transparent,var(--violet),transparent);margin:14px auto}
-h1.logo{margin:0;font-family:var(--font-logo);font-weight:400;font-size:clamp(28px,10.5vw,62px);
-  letter-spacing:.12em;line-height:1.05;text-shadow:0 0 28px rgba(176,108,245,.55)}
-h1.logo small{display:block;font-size:.42em;letter-spacing:.44em;color:var(--violet-bright);margin-top:14px;
+.eyebrow{font-size:clamp(8px,2.4vw,12px);letter-spacing:.4em;color:var(--muted);font-weight:300;margin:0}
+.rule{width:48px;height:1px;background:linear-gradient(90deg,transparent,var(--violet),transparent);margin:12px auto}
+h1.logo{margin:0;font-family:var(--font-logo);font-weight:400;font-size:clamp(26px,9.4vw,60px);
+  letter-spacing:.1em;line-height:1.05;text-shadow:0 0 28px rgba(176,108,245,.55)}
+h1.logo small{display:block;font-size:.42em;letter-spacing:.42em;color:var(--violet-bright);margin-top:12px;
   text-shadow:0 0 22px rgba(176,108,245,.8)}
-h2.title{margin:0;font-family:var(--font-display);font-weight:200;font-size:clamp(26px,8.6vw,48px);
-  letter-spacing:.24em;line-height:1.22;text-wrap:balance}
+h2.title{margin:0;font-family:var(--font-display);font-weight:200;font-size:clamp(22px,7.4vw,44px);
+  letter-spacing:.22em;line-height:1.24;text-wrap:balance}
 h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:0 0 26px rgba(176,108,245,.6)}
-.tag{font-size:clamp(10px,3vw,13px);letter-spacing:.34em;color:var(--muted);font-weight:300;margin:16px 0 0}
-.lead{color:var(--muted);font-weight:300;letter-spacing:.14em;font-size:13px;line-height:2;margin:14px 0 0}
+.tag{font-size:clamp(9px,2.8vw,13px);letter-spacing:.32em;color:var(--muted);font-weight:300;margin:14px 0 0}
+.lead{color:var(--muted);font-weight:300;letter-spacing:.14em;font-size:clamp(10px,2.9vw,13px);line-height:1.9;margin:12px 0 0}
 
-/* ---------- SWOOSH / ORBITA ---------- */
-.orbit{width:min(60%,250px);margin:0 auto;display:block;filter:drop-shadow(0 0 16px rgba(176,108,245,.6))}
+.orbit{width:min(56%,230px);margin:0 auto;display:block;filter:drop-shadow(0 0 16px rgba(176,108,245,.6))}
 .orbit .spark{transform-origin:center;animation:sparkle 3.4s ease-in-out infinite}
 @keyframes sparkle{0%,100%{opacity:.75;transform:scale(.9)}50%{opacity:1;transform:scale(1.18)}}
 
-/* ---------- DATOS DEL EVENTO ---------- */
-.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:30px;
+/* ---------- DATOS ---------- */
+.facts{display:grid;grid-template-columns:repeat(3,1fr);margin-top:22px;
   border-top:1px solid rgba(176,108,245,.18);border-bottom:1px solid rgba(176,108,245,.18)}
-.fact{display:flex;gap:10px;align-items:flex-start;padding:18px 10px;position:relative;min-width:0}
-.fact+.fact::before{content:"";position:absolute;left:0;top:16%;bottom:16%;width:1px;background:rgba(176,108,245,.26)}
-.fact svg{width:22px;height:22px;flex:none;color:var(--violet);margin-top:1px}
-.fact p{margin:0;font-size:11px;letter-spacing:.12em;line-height:1.7;min-width:0}
-.fact p b{display:block;font-weight:400;color:#fff;font-size:12px;letter-spacing:.14em}
-.fact p span{color:var(--violet-bright);font-size:13px;letter-spacing:.16em}
-.fact p i{font-style:normal;color:var(--muted);font-size:10px;letter-spacing:.1em}
+.fact{display:flex;gap:8px;align-items:center;justify-content:center;padding:14px 6px;position:relative;min-width:0}
+.fact+.fact::before{content:"";position:absolute;left:0;top:18%;bottom:18%;width:1px;background:rgba(176,108,245,.26)}
+.fact svg{width:clamp(16px,4.4vw,22px);height:auto;flex:none;color:var(--violet)}
+.fact p{margin:0;font-size:clamp(8.5px,2.3vw,11px);letter-spacing:.1em;line-height:1.6;min-width:0;text-align:left}
+.fact p b{display:block;font-weight:400;color:#fff;letter-spacing:.12em}
+.fact p span{color:var(--violet-bright);letter-spacing:.14em}
+.fact p i{font-style:normal;color:var(--muted);font-size:.86em}
 
-/* ---------- BOTONES GRANDES ---------- */
-.cta{display:flex;align-items:center;justify-content:center;gap:14px;width:100%;
-  padding:19px 24px;border-radius:999px;border:1px solid var(--violet);
+.count{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:20px}
+.count div{border:1px solid rgba(176,108,245,.26);border-radius:9px;padding:9px 3px;background:rgba(18,8,34,.5)}
+.count b{display:block;font-size:clamp(15px,5.2vw,26px);font-weight:400;font-variant-numeric:tabular-nums;color:#fff;
+  text-shadow:0 0 18px rgba(176,108,245,.5)}
+.count span{display:block;margin-top:4px;font-size:clamp(7px,1.9vw,9px);letter-spacing:.24em;color:var(--muted)}
+
+/* ---------- BOTONES ---------- */
+.cta{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;
+  padding:clamp(13px,3.4vw,18px) 22px;border-radius:999px;border:1px solid var(--violet);
   background:linear-gradient(180deg, rgba(109,40,217,.42), rgba(60,16,120,.3));
-  font-size:clamp(12px,3.4vw,15px);letter-spacing:.3em;font-weight:400;
-  box-shadow:0 0 26px rgba(176,108,245,.42), inset 0 1px 0 rgba(255,255,255,.22), inset 0 0 28px rgba(176,108,245,.18);
-  transition:transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s, background .3s}
-.cta:hover{transform:translateY(-2px);box-shadow:0 0 44px rgba(176,108,245,.75), inset 0 1px 0 rgba(255,255,255,.3), inset 0 0 34px rgba(176,108,245,.26)}
-.cta:active{transform:translateY(0) scale(.99)}
-.cta svg{width:17px;height:17px;flex:none}
-.cta.ghost{width:auto;margin:0 auto;padding:14px 34px;letter-spacing:.24em;font-size:12px;
-  background:rgba(109,40,217,.16);box-shadow:0 0 18px rgba(176,108,245,.3), inset 0 0 16px rgba(176,108,245,.12)}
-.stackbtn{display:grid;gap:16px;margin-top:34px;justify-items:center}
-.stackbtn .cta{max-width:470px}
+  font-size:clamp(10px,3vw,14px);letter-spacing:.28em;font-weight:400;
+  box-shadow:0 0 24px rgba(176,108,245,.4), inset 0 1px 0 rgba(255,255,255,.2), inset 0 0 26px rgba(176,108,245,.16);
+  transition:transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s}
+.cta:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(176,108,245,.7)}
+.cta:active{transform:scale(.99)}
+.cta svg{width:16px;height:16px;flex:none}
+.cta.ghost{width:auto;margin:0 auto;padding:clamp(10px,2.6vw,13px) 30px;letter-spacing:.22em;font-size:clamp(9px,2.6vw,12px);
+  background:rgba(109,40,217,.16);box-shadow:0 0 16px rgba(176,108,245,.28), inset 0 0 14px rgba(176,108,245,.1)}
+.stackbtn{display:grid;gap:12px;margin-top:22px;justify-items:center}
+.stackbtn .cta{max-width:460px}
 
-/* ---------- SCROLL HINT ---------- */
-.hint{display:grid;justify-items:center;gap:0;margin-top:34px}
-.hint .line{width:1px;height:46px;background:linear-gradient(to bottom,transparent,var(--violet))}
-.hint .circ{width:46px;height:46px;border-radius:50%;border:1px solid var(--violet);display:grid;place-items:center;
-  animation:bob 2.4s ease-in-out infinite;box-shadow:0 0 18px rgba(176,108,245,.3)}
-.hint .circ svg{width:16px;height:16px}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
-.hint small{display:block;margin-top:18px;font-size:10px;letter-spacing:.38em;color:var(--muted)}
-.hint .line.short{height:26px;margin-top:14px}
-
-/* ---------- CARDS DE EXPERIENCIA ---------- */
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:30px}
+/* ---------- EXPERIENCIA ---------- */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(7px,1.8vw,12px);margin-top:20px}
 .feat{background:linear-gradient(180deg, rgba(30,12,56,.72), rgba(12,5,26,.72));
-  border:1px solid rgba(176,108,245,.22);border-radius:10px;padding:22px 10px 20px;text-align:center;
+  border:1px solid rgba(176,108,245,.22);border-radius:10px;padding:clamp(12px,3vw,20px) 8px;text-align:center;
   transition:transform .35s cubic-bezier(.22,1,.36,1), border-color .35s, box-shadow .35s}
-.feat:hover{transform:translateY(-5px);border-color:var(--violet);box-shadow:0 10px 34px rgba(109,40,217,.42)}
-.feat svg{width:34px;height:34px;color:var(--violet-bright);filter:drop-shadow(0 0 10px rgba(176,108,245,.7))}
-.feat h3{margin:14px 0 0;font-weight:400;font-size:clamp(10px,2.8vw,13px);letter-spacing:.08em;line-height:1.5}
-.feat .sep{width:28px;height:1px;background:rgba(176,108,245,.5);margin:12px auto}
-.feat p{margin:0;font-size:9.5px;letter-spacing:.1em;line-height:1.8;color:var(--muted)}
+.feat:hover{transform:translateY(-4px);border-color:var(--violet);box-shadow:0 10px 30px rgba(109,40,217,.4)}
+.feat svg{width:clamp(22px,6vw,34px);height:auto;color:var(--violet-bright);filter:drop-shadow(0 0 10px rgba(176,108,245,.7))}
+.feat h3{margin:10px 0 0;font-weight:400;font-size:clamp(8.5px,2.4vw,13px);letter-spacing:.08em;line-height:1.45}
+.feat .sep{width:24px;height:1px;background:rgba(176,108,245,.5);margin:9px auto}
+.feat p{margin:0;font-size:clamp(7.5px,2vw,10px);letter-spacing:.08em;line-height:1.7;color:var(--muted)}
 
 /* ---------- PREMIOS ---------- */
-.podium{margin-top:26px;text-align:center}
-.place{display:inline-flex;align-items:center;gap:10px;font-size:clamp(14px,4.4vw,20px);letter-spacing:.1em}
-.place svg{width:30px;height:30px}
+.place{display:inline-flex;align-items:center;gap:9px;font-size:clamp(12px,4vw,19px);letter-spacing:.1em}
+.place svg{width:clamp(22px,6vw,30px);height:auto}
 .place b{font-weight:500}
-.place sup{font-size:.56em;letter-spacing:.06em}
-.prizeart{position:relative;margin:14px auto 0;width:min(78%,330px)}
-.prizeart::after{content:"";position:absolute;left:50%;bottom:4%;width:120%;height:46%;transform:translateX(-50%);
-  background:radial-gradient(50% 50% at 50% 50%, rgba(176,108,245,.6), rgba(109,40,217,0) 70%);
-  filter:blur(10px);z-index:-1}
-.prizeart svg{width:100%;height:auto;display:block}
-.prizename{margin:18px 0 0;font-size:clamp(11px,3vw,14px);letter-spacing:.3em;color:var(--muted);font-weight:300}
-.prizename b{display:block;margin-top:9px;font-size:clamp(17px,5.4vw,27px);letter-spacing:.14em;color:var(--violet-bright);
+.place sup{font-size:.56em}
+.prizeart{position:relative;margin:10px auto 0;display:grid;justify-items:center}
+.prizeart::after{content:"";position:absolute;left:50%;bottom:4%;width:60%;height:40%;transform:translateX(-50%);
+  background:radial-gradient(50% 50% at 50% 50%, rgba(176,108,245,.55), rgba(109,40,217,0) 70%);filter:blur(10px);z-index:-1}
+.prizeart svg{display:block;height:auto;width:auto;max-width:100%}
+.p1 svg{max-height:min(30vh,240px)}
+.p2 svg{max-height:min(16vh,130px)}
+.prizename{margin:12px 0 0;font-size:clamp(9px,2.6vw,13px);letter-spacing:.28em;color:var(--muted);font-weight:300}
+.prizename b{display:block;margin-top:7px;font-size:clamp(15px,5vw,26px);letter-spacing:.12em;color:var(--violet-bright);
   font-weight:400;text-shadow:0 0 22px rgba(176,108,245,.6)}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:34px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(9px,2.4vw,14px);margin-top:20px}
 .prizecard{background:linear-gradient(180deg, rgba(26,10,48,.6), rgba(10,4,22,.5));
-  border:1px solid rgba(176,108,245,.2);border-radius:12px;padding:20px 12px 24px;text-align:center;
+  border:1px solid rgba(176,108,245,.2);border-radius:12px;padding:clamp(12px,3vw,18px) 10px;text-align:center;
   transition:transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s}
-.prizecard:hover{transform:translateY(-5px);box-shadow:0 12px 36px rgba(109,40,217,.4)}
-.prizecard .prizeart{width:min(86%,200px)}
-.prizecard .big{margin:16px 0 4px;font-size:clamp(22px,7vw,34px);letter-spacing:.06em;font-weight:400;color:#fff}
+.prizecard:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(109,40,217,.4)}
+.prizecard .big{margin:10px 0 3px;font-size:clamp(17px,5.6vw,30px);letter-spacing:.05em;font-weight:400;color:#fff}
 .prizecard .big.v{color:var(--violet-bright);text-shadow:0 0 20px rgba(176,108,245,.6)}
-.prizecard .sub{margin:0;font-size:10.5px;letter-spacing:.2em;color:var(--muted);line-height:1.9}
-.banner{display:flex;align-items:center;gap:14px;width:100%;margin-top:30px;padding:18px 22px;border-radius:999px;
-  border:1px solid rgba(176,108,245,.45);background:rgba(45,16,84,.45);text-align:left;
-  box-shadow:inset 0 0 26px rgba(176,108,245,.14);transition:border-color .3s, box-shadow .3s, transform .3s}
-.banner:hover{border-color:var(--violet);transform:translateY(-2px);box-shadow:0 0 28px rgba(176,108,245,.4), inset 0 0 26px rgba(176,108,245,.2)}
-.banner svg{width:24px;height:24px;color:var(--violet-bright);flex:none}
+.prizecard .sub{margin:0;font-size:clamp(8px,2.2vw,10.5px);letter-spacing:.18em;color:var(--muted);line-height:1.8}
+.banner{display:flex;align-items:center;gap:12px;width:100%;margin-top:18px;padding:clamp(11px,2.8vw,16px) 20px;
+  border-radius:999px;border:1px solid rgba(176,108,245,.45);background:rgba(45,16,84,.45);text-align:left;
+  box-shadow:inset 0 0 24px rgba(176,108,245,.12);transition:border-color .3s, transform .3s, box-shadow .3s}
+.banner:hover{border-color:var(--violet);transform:translateY(-2px);box-shadow:0 0 26px rgba(176,108,245,.4)}
+.banner svg{width:clamp(18px,5vw,24px);height:auto;color:var(--violet-bright);flex:none}
 .banner p{margin:0;min-width:0}
-.banner b{display:block;font-weight:400;font-size:clamp(10px,2.8vw,12.5px);letter-spacing:.2em;color:var(--violet-bright)}
-.banner span{display:block;margin-top:5px;font-size:9.5px;letter-spacing:.14em;color:var(--muted)}
-
-/* ---------- CUENTA REGRESIVA ---------- */
-.count{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:26px}
-.count div{border:1px solid rgba(176,108,245,.26);border-radius:10px;padding:12px 4px;
-  background:rgba(18,8,34,.5)}
-.count b{display:block;font-size:clamp(18px,6vw,28px);font-weight:400;letter-spacing:.04em;
-  font-variant-numeric:tabular-nums;color:#fff;text-shadow:0 0 18px rgba(176,108,245,.5)}
-.count span{display:block;margin-top:5px;font-size:8.5px;letter-spacing:.26em;color:var(--muted)}
+.banner b{display:block;font-weight:400;font-size:clamp(8.5px,2.4vw,12px);letter-spacing:.18em;color:var(--violet-bright)}
+.banner span{display:block;margin-top:4px;font-size:clamp(7.5px,2vw,9.5px);letter-spacing:.12em;color:var(--muted)}
 
 /* ---------- BOLETOS ---------- */
-.tickets{display:grid;gap:14px;margin-top:28px}
+.tickets{display:grid;gap:clamp(8px,2.2vw,13px);margin-top:18px}
 .tk{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;width:100%;text-align:left;
-  padding:20px;border-radius:14px;border:1px solid rgba(176,108,245,.22);
+  padding:clamp(12px,3.2vw,19px);border-radius:14px;border:1px solid rgba(176,108,245,.22);
   background:linear-gradient(140deg, rgba(28,11,52,.7), rgba(10,4,22,.6));
   transition:border-color .3s, box-shadow .3s, transform .3s}
-.tk:hover{transform:translateY(-3px);border-color:rgba(176,108,245,.6)}
-.tk[aria-pressed="true"]{border-color:var(--violet);box-shadow:0 0 30px rgba(176,108,245,.4), inset 0 0 22px rgba(176,108,245,.12)}
-.tk h3{margin:0;font-weight:400;font-size:14px;letter-spacing:.24em}
-.tk .inc{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:6px}
-.tk .inc li{font-size:10.5px;letter-spacing:.1em;color:var(--muted);display:flex;gap:8px;align-items:flex-start}
-.tk .inc li::before{content:"";width:5px;height:5px;margin-top:6px;border-radius:50%;background:var(--violet);flex:none}
+.tk:hover{transform:translateY(-2px);border-color:rgba(176,108,245,.6)}
+.tk[aria-pressed="true"]{border-color:var(--violet);box-shadow:0 0 28px rgba(176,108,245,.38), inset 0 0 20px rgba(176,108,245,.12)}
+.tk h3{margin:0;font-weight:400;font-size:clamp(11px,3.1vw,14px);letter-spacing:.22em}
+.tk .inc{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:4px}
+.tk .inc li{font-size:clamp(8px,2.2vw,10.5px);letter-spacing:.08em;color:var(--muted);display:flex;gap:7px;align-items:flex-start;line-height:1.5}
+.tk .inc li::before{content:"";width:4px;height:4px;margin-top:5px;border-radius:50%;background:var(--violet);flex:none}
 .tk .price{text-align:right}
-.tk .price b{display:block;font-size:clamp(20px,6vw,28px);font-weight:400;color:var(--violet-bright);
+.tk .price b{display:block;font-size:clamp(16px,5.2vw,27px);font-weight:400;color:var(--violet-bright);
   font-variant-numeric:tabular-nums;text-shadow:0 0 18px rgba(176,108,245,.5)}
-.tk .price span{display:block;font-size:9px;letter-spacing:.2em;color:var(--muted);margin-top:4px}
-.tk .flag{display:inline-block;margin-top:10px;padding:4px 10px;border-radius:999px;font-size:8.5px;
-  letter-spacing:.2em;border:1px solid rgba(176,108,245,.45);color:var(--violet-bright)}
-.qtyrow{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:24px;padding:18px 20px;
-  border-radius:14px;border:1px solid rgba(176,108,245,.22);background:rgba(18,8,34,.6)}
-.qtyrow .lbl{font-size:10px;letter-spacing:.24em;color:var(--muted)}
-.qty{display:flex;align-items:center;gap:16px}
-.qty button{width:36px;height:36px;border-radius:50%;border:1px solid var(--violet);display:grid;place-items:center;
-  font-size:18px;line-height:1;transition:background .25s, transform .2s}
+.tk .price span{display:block;font-size:clamp(7px,1.9vw,9px);letter-spacing:.18em;color:var(--muted);margin-top:3px}
+.tk .flag{display:inline-block;margin-top:8px;padding:3px 9px;border-radius:999px;font-size:clamp(7px,1.8vw,8.5px);
+  letter-spacing:.18em;border:1px solid rgba(176,108,245,.45);color:var(--violet-bright)}
+.qtyrow{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:16px;
+  padding:clamp(10px,2.6vw,16px) 18px;border-radius:14px;border:1px solid rgba(176,108,245,.22);background:rgba(18,8,34,.6)}
+.qtyrow .lbl{font-size:clamp(8px,2.2vw,10px);letter-spacing:.22em;color:var(--muted)}
+.qty{display:flex;align-items:center;gap:14px}
+.qty button{width:clamp(30px,8vw,36px);aspect-ratio:1;border-radius:50%;border:1px solid var(--violet);
+  display:grid;place-items:center;font-size:17px;line-height:1;transition:background .25s, transform .2s}
 .qty button:hover{background:rgba(109,40,217,.35);transform:scale(1.06)}
-.qty b{font-size:20px;font-weight:400;min-width:28px;text-align:center;font-variant-numeric:tabular-nums}
-.total{display:flex;align-items:baseline;justify-content:space-between;margin-top:18px;padding:0 4px}
-.total span{font-size:10px;letter-spacing:.28em;color:var(--muted)}
-.total b{font-size:clamp(22px,7vw,32px);font-weight:400;color:#fff;font-variant-numeric:tabular-nums}
-.form{display:grid;gap:14px;margin-top:26px}
-.field{display:grid;gap:8px}
-.field label{font-size:9.5px;letter-spacing:.26em;color:var(--muted)}
-.field input{width:100%;padding:15px 16px;border-radius:10px;border:1px solid rgba(176,108,245,.25);
-  background:rgba(10,4,22,.7);color:#fff;font-size:14px;letter-spacing:.06em;transition:border-color .25s, box-shadow .25s}
-.field input::placeholder{color:rgba(185,168,207,.45);letter-spacing:.1em;font-size:13px}
+.qty b{font-size:clamp(16px,4.6vw,20px);font-weight:400;min-width:26px;text-align:center;font-variant-numeric:tabular-nums}
+.total{display:flex;align-items:baseline;justify-content:space-between;margin-top:14px;padding:0 4px}
+.total span{font-size:clamp(8px,2.2vw,10px);letter-spacing:.26em;color:var(--muted)}
+.total b{font-size:clamp(19px,6vw,30px);font-weight:400;font-variant-numeric:tabular-nums}
+.form{display:grid;gap:clamp(9px,2.2vw,14px);margin-top:18px}
+.field{display:grid;gap:6px}
+.field label{font-size:clamp(7.5px,2vw,9.5px);letter-spacing:.24em;color:var(--muted)}
+.field input{width:100%;padding:clamp(11px,2.8vw,15px) 15px;border-radius:10px;border:1px solid rgba(176,108,245,.25);
+  background:rgba(10,4,22,.7);color:#fff;font-size:16px;letter-spacing:.04em;transition:border-color .25s, box-shadow .25s}
+.field input::placeholder{color:rgba(185,168,207,.45);font-size:14px}
 .field input:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(176,108,245,.18);outline:none}
-.err{font-size:10px;letter-spacing:.14em;color:#ff9db5;min-height:14px}
-.smallnote{margin:16px 0 0;font-size:9.5px;letter-spacing:.16em;color:rgba(185,168,207,.7);line-height:2;text-align:center}
+.err{font-size:clamp(8px,2.2vw,10px);letter-spacing:.12em;color:#ff9db5;min-height:13px;margin:0}
+.smallnote{margin:12px 0 0;font-size:clamp(7.5px,2vw,9.5px);letter-spacing:.14em;color:rgba(185,168,207,.7);line-height:1.9;text-align:center}
+.resume{display:flex;justify-content:space-between;gap:12px;padding:12px 16px;border-radius:12px;
+  border:1px dashed rgba(176,108,245,.4);background:rgba(18,8,34,.5);font-size:clamp(9px,2.4vw,11px);letter-spacing:.14em}
+.resume b{font-weight:400;color:var(--violet-bright)}
 
-/* ---------- PASE / CONFIRMACIÓN ---------- */
-.pass{margin:26px auto 0;max-width:420px;border-radius:18px;overflow:hidden;
+/* ---------- PASE ---------- */
+.pass{margin:14px auto 0;max-width:400px;border-radius:16px;overflow:hidden;
   border:1px solid rgba(176,108,245,.45);background:linear-gradient(170deg,#210c40,#0b0419);
-  box-shadow:0 20px 60px rgba(60,16,120,.6)}
-.pass .ph{padding:22px;border-bottom:1px dashed rgba(176,108,245,.4);text-align:center}
-.pass .ph b{display:block;font-family:var(--font-logo);font-size:17px;letter-spacing:.18em}
-.pass .ph span{display:block;margin-top:8px;font-size:9px;letter-spacing:.4em;color:var(--violet)}
-.pass .pb{padding:22px;display:grid;gap:16px}
-.pass .row{display:flex;justify-content:space-between;gap:12px;font-size:11px;letter-spacing:.14em}
+  box-shadow:0 18px 50px rgba(60,16,120,.6)}
+.pass .ph{padding:clamp(12px,3vw,18px);border-bottom:1px dashed rgba(176,108,245,.4);text-align:center}
+.pass .ph b{display:block;font-family:var(--font-logo);font-size:clamp(12px,3.4vw,16px);letter-spacing:.16em}
+.pass .ph span{display:block;margin-top:6px;font-size:clamp(7px,2vw,9px);letter-spacing:.36em;color:var(--violet)}
+.pass .pb{padding:clamp(12px,3vw,18px);display:grid;gap:clamp(8px,2vw,13px)}
+.pass .row{display:flex;justify-content:space-between;gap:12px;font-size:clamp(8.5px,2.3vw,11px);letter-spacing:.12em}
 .pass .row span{color:var(--muted)}
 .pass .row b{font-weight:400;text-align:right}
-.pass canvas{display:block;margin:4px auto 0;width:150px;height:150px;border-radius:10px;background:#fff;padding:9px}
-.pass .folio{text-align:center;font-size:10px;letter-spacing:.32em;color:var(--violet-bright)}
-.ok{display:grid;place-items:center;gap:0;margin-top:6px}
-.ok svg{width:64px;height:64px;color:var(--violet-bright)}
-.ok svg path{stroke-dasharray:60;stroke-dashoffset:60;animation:draw .8s .25s cubic-bezier(.65,0,.35,1) forwards}
+.pass canvas{display:block;margin:0 auto;width:min(34vh,140px);height:min(34vh,140px);border-radius:10px;background:#fff;padding:8px}
+.pass .folio{text-align:center;font-size:clamp(8px,2.3vw,10px);letter-spacing:.3em;color:var(--violet-bright);margin:0}
+.ok svg{width:clamp(38px,11vw,56px);height:auto;color:var(--violet-bright)}
+.ok svg path{stroke-dasharray:60;stroke-dashoffset:60;animation:draw .8s .3s cubic-bezier(.65,0,.35,1) forwards}
 @keyframes draw{to{stroke-dashoffset:0}}
 
 /* ---------- INFO ---------- */
-.infolist{display:grid;gap:12px;margin-top:26px}
-.info{display:flex;gap:14px;padding:18px 20px;border-radius:12px;border:1px solid rgba(176,108,245,.2);
-  background:rgba(18,8,34,.55)}
-.info svg{width:20px;height:20px;color:var(--violet);flex:none;margin-top:2px}
-.info div{min-width:0}
-.info b{display:block;font-weight:400;font-size:11px;letter-spacing:.24em;color:#fff}
-.info p{margin:7px 0 0;font-size:11px;letter-spacing:.1em;line-height:1.9;color:var(--muted)}
-.copybtn{margin-top:10px;padding:8px 14px;border-radius:999px;border:1px solid rgba(176,108,245,.45);
-  font-size:9.5px;letter-spacing:.2em;color:var(--violet-bright);transition:background .25s}
-.copybtn:hover{background:rgba(109,40,217,.3)}
-.map{margin-top:26px;border-radius:14px;overflow:hidden;border:1px solid rgba(176,108,245,.25);position:relative}
-.map svg{display:block;width:100%;height:auto}
+.infowrap{display:grid;gap:clamp(10px,2.4vw,16px);margin-top:16px}
+.map{border-radius:14px;overflow:hidden;border:1px solid rgba(176,108,245,.25)}
+.map svg{display:block;width:100%;height:auto;max-height:22vh}
 .map .pin{animation:bob 2.6s ease-in-out infinite;transform-origin:center}
+.infolist{display:grid;gap:clamp(7px,1.8vw,11px)}
+.info{display:flex;gap:11px;padding:clamp(9px,2.4vw,15px) 15px;border-radius:12px;
+  border:1px solid rgba(176,108,245,.2);background:rgba(18,8,34,.55);text-align:left}
+.info svg{width:clamp(15px,4vw,20px);height:auto;color:var(--violet);flex:none;margin-top:2px}
+.info div{min-width:0}
+.info b{display:block;font-weight:400;font-size:clamp(8.5px,2.3vw,11px);letter-spacing:.22em;color:#fff}
+.info p{margin:5px 0 0;font-size:clamp(8.5px,2.3vw,11px);letter-spacing:.08em;line-height:1.7;color:var(--muted)}
+.copybtn{margin-top:8px;padding:6px 12px;border-radius:999px;border:1px solid rgba(176,108,245,.45);
+  font-size:clamp(7.5px,2vw,9.5px);letter-spacing:.18em;color:var(--violet-bright);transition:background .25s}
+.copybtn:hover{background:rgba(109,40,217,.3)}
 
 /* ---------- FAQ ---------- */
-.faq{margin-top:26px;display:grid;gap:10px}
-.qa{border:1px solid rgba(176,108,245,.2);border-radius:12px;background:rgba(18,8,34,.5);overflow:hidden}
-.qa button{display:flex;width:100%;align-items:center;justify-content:space-between;gap:14px;text-align:left;
-  padding:18px 20px;font-size:11.5px;letter-spacing:.14em;line-height:1.6}
-.qa button svg{width:14px;height:14px;flex:none;color:var(--violet);transition:transform .35s}
-.qa[open-state="1"] button svg{transform:rotate(45deg)}
+.faq{margin-top:16px;display:grid;gap:clamp(6px,1.6vw,10px)}
+.qa{border:1px solid rgba(176,108,245,.2);border-radius:12px;background:rgba(18,8,34,.5);overflow:hidden;text-align:left}
+.qa>button{display:flex;width:100%;align-items:center;justify-content:space-between;gap:12px;text-align:left;
+  padding:clamp(10px,2.6vw,16px) 16px;font-size:clamp(8.5px,2.4vw,11.5px);letter-spacing:.12em;line-height:1.5}
+.qa>button svg{width:13px;height:13px;flex:none;color:var(--violet);transition:transform .35s}
+.qa[data-open="1"]>button svg{transform:rotate(45deg)}
 .qa .ans{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.22,1,.36,1)}
-.qa[open-state="1"] .ans{grid-template-rows:1fr}
+.qa[data-open="1"] .ans{grid-template-rows:1fr}
 .qa .ans>div{overflow:hidden}
-.qa .ans p{margin:0;padding:0 20px 20px;font-size:11px;letter-spacing:.1em;line-height:2;color:var(--muted)}
+.qa .ans p{margin:0;padding:0 16px 14px;font-size:clamp(8px,2.2vw,10.5px);letter-spacing:.08em;line-height:1.85;color:var(--muted)}
 
 /* ---------- TOAST ---------- */
-.toast{position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom,0px));transform:translate(-50%,24px);
-  z-index:60;padding:14px 24px;border-radius:999px;border:1px solid var(--violet);background:rgba(28,10,52,.95);
-  font-size:11px;letter-spacing:.18em;opacity:0;pointer-events:none;transition:opacity .3s, transform .3s;
-  box-shadow:0 0 28px rgba(176,108,245,.5)}
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);
+  z-index:60;padding:12px 22px;border-radius:999px;border:1px solid var(--violet);background:rgba(28,10,52,.96);
+  font-size:11px;letter-spacing:.16em;opacity:0;pointer-events:none;transition:opacity .3s, transform .3s;
+  box-shadow:0 0 26px rgba(176,108,245,.5);max-width:86vw;text-align:center}
 .toast.show{opacity:1;transform:translate(-50%,0)}
+.footnote{margin-top:14px;text-align:center;font-size:clamp(7px,1.9vw,9px);letter-spacing:.28em;color:rgba(185,168,207,.55);line-height:2.2}
 
-.footer{margin-top:48px;text-align:center;font-size:9px;letter-spacing:.3em;color:rgba(185,168,207,.55);line-height:2.4}
-
-@media (max-width:420px){
-  .facts{grid-template-columns:1fr;border-bottom:none}
-  .fact+.fact::before{left:8%;right:8%;top:0;bottom:auto;width:auto;height:1px}
-  .fact{padding:14px 4px}
-  .grid3{grid-template-columns:1fr 1fr;gap:10px}
-  .tk{grid-template-columns:1fr}
-  .tk .price{text-align:left}
+/* ---------- TABLET / PC ---------- */
+@media (min-width:760px){
+  :root{--hdr:72px}
+  .wrap{max-width:780px}
+  .infowrap{grid-template-columns:1fr 1fr;align-items:center}
+  .map svg{max-height:34vh}
+  .faq{grid-template-columns:1fr 1fr;align-items:start}
+  .tickets{grid-template-columns:repeat(3,1fr);align-items:stretch}
+  .tk{grid-template-columns:1fr;align-content:start}
+  .tk .price{text-align:left;margin-top:10px}
+  .form{grid-template-columns:1fr 1fr}
+  .form .field:first-child,.form .err,.form .cta{grid-column:1/-1}
+  .pass{max-width:440px}
+}
+@media (min-width:1100px){
+  .wrap{max-width:900px}
+  .screen{padding-left:max(40px,env(safe-area-inset-left,0px));padding-right:max(40px,env(safe-area-inset-right,0px))}
+}
+/* teléfono acostado / pantallas muy bajas */
+@media (max-height:520px){
+  :root{--hdr:50px;--foot:58px}
+  .count,.footnote{display:none}
+  .swipe small{display:none}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
-  [data-rv]{opacity:1;transform:none;filter:none}
+  [data-rv]{opacity:1}
 }
 </style>
 <style>
-  :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
   img{max-width:100%}
   [hidden]{display:none!important}
 </style>
@@ -365,6 +394,8 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
   <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
 </header>
 
+<p class="upcue">DESLIZA ARRIBA PARA VOLVER</p>
+
 <div class="drawer" id="drawer">
   <div class="scrim" data-close></div>
   <nav aria-label="Menú principal">
@@ -372,14 +403,15 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
     <a href="#experiencia" data-nav="experiencia">EXPERIENCIA <em>02</em></a>
     <a href="#premios" data-nav="premios">PREMIOS <em>03</em></a>
     <a href="#boletos" data-nav="boletos">BOLETOS <em>04</em></a>
-    <a href="#info" data-nav="info">INFO Y SEDE <em>05</em></a>
-    <a href="#faq" data-nav="faq">PREGUNTAS <em>06</em></a>
+    <a href="#datos" data-nav="datos">MIS DATOS <em>05</em></a>
+    <a href="#info" data-nav="info">INFO Y SEDE <em>06</em></a>
+    <a href="#faq" data-nav="faq">PREGUNTAS <em>07</em></a>
     <p class="note">SÁB 24 OCT · 9:00 PM<br>CAMPECHE · COL. BELLAVISTA<br>CUPO LIMITADO</p>
   </nav>
 </div>
 
-<main>
-  <!-- ============ INICIO ============ -->
+<div class="deck" id="deck">
+  <!-- ============ 01 INICIO ============ -->
   <section class="screen" id="s-inicio" aria-label="Inicio">
     <div class="wrap center">
       <svg class="orbit zoomin" data-rv style="--d:60ms" viewBox="0 0 260 110" aria-hidden="true">
@@ -387,22 +419,20 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
         <path d="M30 70 C 62 88, 100 92, 128 82" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/>
         <path class="spark" d="M168 18 l5 13 13 5 -13 5 -5 13 -5 -13 -13 -5 13 -5z" fill="#fff"/>
       </svg>
-      <p class="eyebrow" data-rv style="--d:240ms">POR PRIMERA VEZ EN</p>
-      <p class="eyebrow" data-rv style="--d:340ms" id="cityLine">C A M P E C H E</p>
-      <div class="rule" data-rv style="--d:420ms"></div>
-      <h1 class="logo" data-rv style="--d:520ms">GALAXI<small>NIGHT</small></h1>
-      <p class="tag" data-rv style="--d:760ms">UNA NOCHE FUERA DE ESTE MUNDO</p>
-
-      <div class="count" data-rv style="--d:900ms" id="count" aria-live="off">
+      <p class="eyebrow" data-rv style="--d:220ms">POR PRIMERA VEZ EN</p>
+      <p class="eyebrow" data-rv style="--d:300ms">C A M P E C H E</p>
+      <div class="rule" data-rv style="--d:380ms"></div>
+      <h1 class="logo" data-rv style="--d:460ms">GALAXI<small>NIGHT</small></h1>
+      <p class="tag" data-rv style="--d:680ms">UNA NOCHE FUERA DE ESTE MUNDO</p>
+      <div class="count" data-rv style="--d:780ms">
         <div><b id="cd">00</b><span>DÍAS</span></div>
         <div><b id="ch">00</b><span>HRS</span></div>
         <div><b id="cm">00</b><span>MIN</span></div>
         <div><b id="cs">00</b><span>SEG</span></div>
       </div>
-
-      <div class="facts" data-rv style="--d:1000ms">
+      <div class="facts" data-rv style="--d:860ms">
         <div class="fact">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/><circle cx="8" cy="14" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="14" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="14" r="1" fill="currentColor" stroke="none"/><circle cx="8" cy="17.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="17.5" r="1" fill="currentColor" stroke="none"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/><circle cx="8" cy="14" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="14" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="14" r="1" fill="currentColor" stroke="none"/></svg>
           <p><b>SÁBADO</b><span>24 OCT</span></p>
         </div>
         <div class="fact">
@@ -414,108 +444,77 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
           <p><b>9:00 PM</b><i>A 3:00 AM</i></p>
         </div>
       </div>
-
-      <div class="stackbtn" data-rv style="--d:1120ms">
+      <div class="stackbtn" data-rv style="--d:940ms">
         <button class="cta" data-go="boletos">COMPRAR BOLETOS
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
         </button>
         <button class="cta ghost" data-go="premios">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="width:16px;height:16px"><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3M9 20h6M12 14v6"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="width:15px;height:15px"><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3M9 20h6M12 14v6"/></svg>
           VER PREMIOS
         </button>
-      </div>
-
-      <div class="hint" data-rv style="--d:1240ms">
-        <div class="line"></div>
-        <button class="circ" data-go="experiencia" aria-label="Continuar a la experiencia">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9l6 6 6-6"/></svg>
-        </button>
-        <small>DESLIZA HACIA ABAJO</small>
-        <div class="line short"></div>
       </div>
     </div>
   </section>
 
-  <!-- ============ EXPERIENCIA ============ -->
+  <!-- ============ 02 EXPERIENCIA ============ -->
   <section class="screen" id="s-experiencia" aria-label="Experiencia">
     <div class="wrap center">
       <p class="eyebrow" data-rv style="--d:60ms">UNA NOCHE FUERA DE ESTE MUNDO</p>
       <div class="rule" data-rv style="--d:140ms"></div>
       <h2 class="title" data-rv style="--d:220ms">MUCHO MÁS<b>QUE MÚSICA</b></h2>
-
-      <svg class="orbit zoomin" data-rv style="--d:400ms;width:min(72%,300px);margin-top:26px" viewBox="0 0 300 150" aria-hidden="true">
+      <svg class="orbit zoomin" data-rv style="--d:380ms;width:min(58%,260px);margin-top:16px" viewBox="0 0 300 130" aria-hidden="true">
         <defs>
           <radialGradient id="pg" cx="50%" cy="38%"><stop offset="0" stop-color="#c79bff" stop-opacity=".85"/><stop offset="60%" stop-color="#5b21b6" stop-opacity=".5"/><stop offset="100%" stop-color="#2a0b4d" stop-opacity="0"/></radialGradient>
           <linearGradient id="rg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b06cf5" stop-opacity=".2"/><stop offset="50%" stop-color="#e3c6ff"/><stop offset="1" stop-color="#b06cf5" stop-opacity=".2"/></linearGradient>
         </defs>
-        <circle cx="150" cy="60" r="52" fill="url(#pg)"/>
-        <ellipse cx="150" cy="92" rx="88" ry="22" fill="none" stroke="url(#rg)" stroke-width="4"/>
-        <ellipse cx="150" cy="92" rx="62" ry="15" fill="none" stroke="url(#rg)" stroke-width="2" opacity=".7"/>
-        <path class="spark" d="M232 26 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z" fill="#fff"/>
+        <circle cx="150" cy="54" r="46" fill="url(#pg)"/>
+        <ellipse cx="150" cy="82" rx="84" ry="20" fill="none" stroke="url(#rg)" stroke-width="4"/>
+        <ellipse cx="150" cy="82" rx="58" ry="13" fill="none" stroke="url(#rg)" stroke-width="2" opacity=".7"/>
+        <path class="spark" d="M232 22 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z" fill="#fff"/>
       </svg>
-
-      <div class="grid3" data-rv style="--d:540ms">
+      <div class="grid3" data-rv style="--d:520ms">
         <div class="feat">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13.5" width="4.5" height="7" rx="2"/><rect x="17" y="13.5" width="4.5" height="7" rx="2"/></svg>
-          <h3>DJ EN VIVO</h3><div class="sep"></div>
-          <p>MÚSICA QUE TE LLEVA A OTRA DIMENSIÓN</p>
+          <h3>DJ EN VIVO</h3><div class="sep"></div><p>MÚSICA QUE TE LLEVA A OTRA DIMENSIÓN</p>
         </div>
         <div class="feat">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 8.5c3-2 6-2 9.5-2s6.5 0 9.5 2c0 5-2.5 8.5-5.5 8.5-2 0-2.6-1.6-4-1.6s-2 1.6-4 1.6C5 17 2.5 13.5 2.5 8.5z"/><circle cx="8.3" cy="10.6" r="1.4" fill="currentColor" stroke="none"/><circle cx="15.7" cy="10.6" r="1.4" fill="currentColor" stroke="none"/></svg>
-          <h3>CONCURSO<br>DE DISFRACES</h3><div class="sep"></div>
-          <p>DEMUESTRA TU CREATIVIDAD</p>
+          <h3>CONCURSO<br>DE DISFRACES</h3><div class="sep"></div><p>DEMUESTRA TU CREATIVIDAD</p>
         </div>
         <div class="feat">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16l-8 8z"/><path d="M12 12v8M8.5 20h7"/><circle cx="17.5" cy="6.5" r="1.4"/></svg>
-          <h3>BEBIDAS<br>ESPECIALES</h3><div class="sep"></div>
-          <p>TRAGOS ÚNICOS PARA LA NOCHE</p>
+          <h3>BEBIDAS<br>ESPECIALES</h3><div class="sep"></div><p>TRAGOS ÚNICOS PARA LA NOCHE</p>
         </div>
         <div class="feat">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><circle cx="12" cy="8" r="2"/><circle cx="12" cy="15.2" r="2.8"/></svg>
-          <h3>SONIDO<br>PROFESIONAL</h3><div class="sep"></div>
-          <p>UNA EXPERIENCIA DE ALTO NIVEL</p>
+          <h3>SONIDO<br>PROFESIONAL</h3><div class="sep"></div><p>UNA EXPERIENCIA DE ALTO NIVEL</p>
         </div>
         <div class="feat">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M12 3.5l2.6 5.5 5.9.8-4.3 4.2 1.1 6-5.3-2.9-5.3 2.9 1.1-6L3.5 9.8l5.9-.8z"/></svg>
-          <h3>DINÁMICAS<br>Y SORPRESAS</h3><div class="sep"></div>
-          <p>ACTIVIDADES DURANTE TODA LA NOCHE</p>
+          <h3>DINÁMICAS<br>Y SORPRESAS</h3><div class="sep"></div><p>ACTIVIDADES DURANTE TODA LA NOCHE</p>
         </div>
         <div class="feat">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6.5c1-2 3-2.4 4.4-1.6M5 13.5c0-3.6 3-6 7-6s7 2.4 7 6c0 4-3 7-7 7s-7-3-7-7z"/><path d="M9 12.2l1.6 1.6-1.6 1.6M15 12.2l-1.6 1.6 1.6 1.6M10 17.6c1.3.7 2.7.7 4 0" stroke-linecap="round"/></svg>
-          <h3>AMBIENTACIÓN<br>TEMÁTICA</h3><div class="sep"></div>
-          <p>VIVE EL ESPÍRITU DE HALLOWEEN</p>
+          <h3>AMBIENTACIÓN<br>TEMÁTICA</h3><div class="sep"></div><p>VIVE EL ESPÍRITU DE HALLOWEEN</p>
         </div>
       </div>
-
-      <div class="stackbtn" data-rv style="--d:700ms">
+      <div class="stackbtn" data-rv style="--d:660ms">
         <button class="cta" data-go="boletos">COMPRAR BOLETOS
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
         </button>
       </div>
-
-      <div class="hint" data-rv style="--d:820ms">
-        <div class="line"></div>
-        <button class="circ" data-go="premios" aria-label="Ver premios">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9l6 6 6-6"/></svg>
-        </button>
-        <small>DESLIZA HACIA ABAJO</small>
-      </div>
     </div>
   </section>
 
-  <!-- ============ PREMIOS ============ -->
+  <!-- ============ 03 PREMIOS ============ -->
   <section class="screen" id="s-premios" aria-label="Premios">
     <div class="wrap center">
-      <svg class="orbit zoomin" data-rv style="--d:40ms;width:min(52%,210px)" viewBox="0 0 260 90" aria-hidden="true">
-        <ellipse cx="130" cy="48" rx="104" ry="26" fill="none" stroke="#b06cf5" stroke-width="2.4" transform="rotate(-10 130 48)"/>
-        <path class="spark" d="M150 10 l4.6 11.6 11.6 4.6 -11.6 4.6 -4.6 11.6 -4.6 -11.6 -11.6 -4.6 11.6 -4.6z" fill="#fff"/>
-      </svg>
-      <p class="eyebrow" data-rv style="--d:160ms">CONCURSO DE DISFRACES</p>
-      <h2 class="title" data-rv style="--d:260ms" id="premiosTitle">PREMIOS</h2>
-      <div class="rule" data-rv style="--d:380ms"></div>
-      <p class="lead" data-rv style="--d:440ms">LOS 3 PRIMEROS LUGARES GANAN<br>PREMIOS INCREÍBLES.</p>
+      <p class="eyebrow" data-rv style="--d:60ms">CONCURSO DE DISFRACES</p>
+      <h2 class="title" data-rv style="--d:160ms">PREMIOS</h2>
+      <div class="rule" data-rv style="--d:280ms"></div>
+      <p class="lead" data-rv style="--d:340ms">LOS 3 PRIMEROS LUGARES GANAN PREMIOS INCREÍBLES.</p>
 
-      <div class="podium" data-rv style="--d:560ms">
+      <div data-rv style="--d:440ms;margin-top:14px">
         <div class="place">
           <svg viewBox="0 0 40 32" aria-hidden="true">
             <path d="M4 26h32l3-18-9.5 6L20 3 10.5 14 1 8z" fill="#f5c542" stroke="#ffe08a" stroke-width="1.2" stroke-linejoin="round"/>
@@ -523,86 +522,59 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
           </svg>
           <b>1<sup>ER</sup> LUGAR</b>
         </div>
-        <div class="prizeart zoomin" data-rv style="--d:680ms">
-          <svg viewBox="0 0 220 240" aria-hidden="true">
-            <defs>
-              <linearGradient id="btl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0a0a0c"/><stop offset="38%" stop-color="#3a3340"/><stop offset="62%" stop-color="#17141b"/><stop offset="1" stop-color="#050506"/></linearGradient>
-              <linearGradient id="rock" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4b2378"/><stop offset="1" stop-color="#140628"/></linearGradient>
-            </defs>
-            <path d="M20 240 L42 196 h136 l22 44z" fill="url(#rock)"/>
-            <path d="M42 196 l16 -14 h104 l16 14z" fill="#6d35a8" opacity=".55"/>
-            <path d="M76 60 h68 v18 c0 10 10 16 10 30 v78 c0 8-6 14-14 14 h-60 c-8 0-14-6-14-14 v-78 c0-14 10-20 10-30z" fill="url(#btl)" stroke="#6b5b78" stroke-width="1.2"/>
-            <rect x="92" y="22" width="36" height="42" rx="7" fill="#121016" stroke="#6b5b78" stroke-width="1.2"/>
-            <rect x="88" y="16" width="44" height="12" rx="6" fill="#1b181f" stroke="#7a6a86" stroke-width="1"/>
-            <circle cx="110" cy="150" r="30" fill="none" stroke="#cbb9d8" stroke-width="1.6" opacity=".85"/>
-            <circle cx="110" cy="150" r="22" fill="#0d0b11" stroke="#9a86a8" stroke-width="1"/>
-            <ellipse cx="96" cy="120" rx="5" ry="40" fill="#fff" opacity=".12"/>
-          </svg>
-        </div>
-        <p class="prizename" data-rv style="--d:840ms">UNA BOTELLA<b id="prize1">TEQUILA PREMIUM</b></p>
       </div>
+      <div class="prizeart p1 zoomin" data-rv style="--d:540ms">
+        <svg viewBox="0 0 220 240" aria-hidden="true">
+          <defs>
+            <linearGradient id="btl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0a0a0c"/><stop offset="38%" stop-color="#3a3340"/><stop offset="62%" stop-color="#17141b"/><stop offset="1" stop-color="#050506"/></linearGradient>
+            <linearGradient id="rock" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4b2378"/><stop offset="1" stop-color="#140628"/></linearGradient>
+          </defs>
+          <path d="M20 240 L42 196 h136 l22 44z" fill="url(#rock)"/>
+          <path d="M42 196 l16 -14 h104 l16 14z" fill="#6d35a8" opacity=".55"/>
+          <path d="M76 60 h68 v18 c0 10 10 16 10 30 v78 c0 8-6 14-14 14 h-60 c-8 0-14-6-14-14 v-78 c0-14 10-20 10-30z" fill="url(#btl)" stroke="#6b5b78" stroke-width="1.2"/>
+          <rect x="92" y="22" width="36" height="42" rx="7" fill="#121016" stroke="#6b5b78" stroke-width="1.2"/>
+          <rect x="88" y="16" width="44" height="12" rx="6" fill="#1b181f" stroke="#7a6a86" stroke-width="1"/>
+          <circle cx="110" cy="150" r="30" fill="none" stroke="#cbb9d8" stroke-width="1.6" opacity=".85"/>
+          <circle cx="110" cy="150" r="22" fill="#0d0b11" stroke="#9a86a8" stroke-width="1"/>
+          <ellipse cx="96" cy="120" rx="5" ry="40" fill="#fff" opacity=".12"/>
+        </svg>
+      </div>
+      <p class="prizename" data-rv style="--d:700ms">UNA BOTELLA<b>TEQUILA PREMIUM</b></p>
 
       <div class="grid2">
-        <div class="prizecard" data-rv style="--d:960ms">
-          <div class="place" style="font-size:15px">
-            <svg viewBox="0 0 40 32" aria-hidden="true">
-              <path d="M4 26h32l3-18-9.5 6L20 3 10.5 14 1 8z" fill="#d8dbe2" stroke="#f2f4f8" stroke-width="1.2" stroke-linejoin="round"/>
-              <circle cx="20" cy="3" r="2.4" fill="#fff"/>
-            </svg>
+        <div class="prizecard" data-rv style="--d:820ms">
+          <div class="place" style="font-size:clamp(10px,3.2vw,15px)">
+            <svg viewBox="0 0 40 32" aria-hidden="true"><path d="M4 26h32l3-18-9.5 6L20 3 10.5 14 1 8z" fill="#d8dbe2" stroke="#f2f4f8" stroke-width="1.2" stroke-linejoin="round"/><circle cx="20" cy="3" r="2.4" fill="#fff"/></svg>
             <b>2<sup>DO</sup> LUGAR</b>
           </div>
-          <div class="prizeart">
+          <div class="prizeart p2">
             <svg viewBox="0 0 200 150" aria-hidden="true">
               <path d="M14 150 L32 116 h136 l18 34z" fill="url(#rock)"/>
-              <g>
-                <rect x="40" y="92" width="120" height="20" rx="3" fill="#cdbf9a" stroke="#8d7f5e" stroke-width="1"/>
-                <rect x="34" y="74" width="126" height="20" rx="3" fill="#ddd2b3" stroke="#8d7f5e" stroke-width="1" transform="rotate(-2 97 84)"/>
-                <rect x="44" y="56" width="120" height="20" rx="3" fill="#cfd8c4" stroke="#7f8d73" stroke-width="1" transform="rotate(1.5 104 66)"/>
-                <rect x="38" y="38" width="124" height="20" rx="3" fill="#e2d9bd" stroke="#8d7f5e" stroke-width="1" transform="rotate(-1 100 48)"/>
-                <circle cx="100" cy="48" r="6" fill="none" stroke="#8d7f5e" stroke-width="1.2"/>
-                <circle cx="97" cy="84" r="6" fill="none" stroke="#8d7f5e" stroke-width="1.2"/>
-              </g>
+              <rect x="40" y="92" width="120" height="20" rx="3" fill="#cdbf9a" stroke="#8d7f5e" stroke-width="1"/>
+              <rect x="34" y="74" width="126" height="20" rx="3" fill="#ddd2b3" stroke="#8d7f5e" stroke-width="1" transform="rotate(-2 97 84)"/>
+              <rect x="44" y="56" width="120" height="20" rx="3" fill="#cfd8c4" stroke="#7f8d73" stroke-width="1" transform="rotate(1.5 104 66)"/>
+              <rect x="38" y="38" width="124" height="20" rx="3" fill="#e2d9bd" stroke="#8d7f5e" stroke-width="1" transform="rotate(-1 100 48)"/>
+              <circle cx="100" cy="48" r="6" fill="none" stroke="#8d7f5e" stroke-width="1.2"/>
+              <circle cx="97" cy="84" r="6" fill="none" stroke="#8d7f5e" stroke-width="1.2"/>
             </svg>
           </div>
           <p class="big">$500</p>
           <p class="sub">DE CONSUMO<br>O EFECTIVO</p>
         </div>
-
-        <div class="prizecard" data-rv style="--d:1060ms">
-          <div class="place" style="font-size:15px">
-            <svg viewBox="0 0 40 32" aria-hidden="true">
-              <path d="M4 26h32l3-18-9.5 6L20 3 10.5 14 1 8z" fill="#c88a4e" stroke="#e8b27a" stroke-width="1.2" stroke-linejoin="round"/>
-              <circle cx="20" cy="3" r="2.4" fill="#f6d8b4"/>
-            </svg>
+        <div class="prizecard" data-rv style="--d:900ms">
+          <div class="place" style="font-size:clamp(10px,3.2vw,15px)">
+            <svg viewBox="0 0 40 32" aria-hidden="true"><path d="M4 26h32l3-18-9.5 6L20 3 10.5 14 1 8z" fill="#c88a4e" stroke="#e8b27a" stroke-width="1.2" stroke-linejoin="round"/><circle cx="20" cy="3" r="2.4" fill="#f6d8b4"/></svg>
             <b>3<sup>ER</sup> LUGAR</b>
           </div>
-          <div class="prizeart">
+          <div class="prizeart p2">
             <svg viewBox="0 0 200 150" aria-hidden="true">
               <path d="M14 150 L32 116 h136 l18 34z" fill="url(#rock)"/>
-              <g id="sixpack">
-                <g transform="translate(46,22)">
-                  <path d="M8 24 h12 v-10 h-4 V4 h-4 v10 h-4z" fill="#d8a23a"/>
-                  <rect x="4" y="24" width="20" height="62" rx="6" fill="#e0ad3f" stroke="#a97c1f" stroke-width="1"/>
-                  <rect x="4" y="46" width="20" height="26" fill="#f4f1e6" stroke="#cfc6ac" stroke-width=".8"/>
-                </g>
-                <g transform="translate(76,16)">
-                  <path d="M8 24 h12 v-10 h-4 V4 h-4 v10 h-4z" fill="#d8a23a"/>
-                  <rect x="4" y="24" width="20" height="68" rx="6" fill="#e6b445" stroke="#a97c1f" stroke-width="1"/>
-                  <rect x="4" y="48" width="20" height="28" fill="#faf7ee" stroke="#cfc6ac" stroke-width=".8"/>
-                </g>
-                <g transform="translate(106,16)">
-                  <path d="M8 24 h12 v-10 h-4 V4 h-4 v10 h-4z" fill="#d8a23a"/>
-                  <rect x="4" y="24" width="20" height="68" rx="6" fill="#e6b445" stroke="#a97c1f" stroke-width="1"/>
-                  <rect x="4" y="48" width="20" height="28" fill="#faf7ee" stroke="#cfc6ac" stroke-width=".8"/>
-                </g>
-                <g transform="translate(136,22)">
-                  <path d="M8 24 h12 v-10 h-4 V4 h-4 v10 h-4z" fill="#d8a23a"/>
-                  <rect x="4" y="24" width="20" height="62" rx="6" fill="#e0ad3f" stroke="#a97c1f" stroke-width="1"/>
-                  <rect x="4" y="46" width="20" height="26" fill="#f4f1e6" stroke="#cfc6ac" stroke-width=".8"/>
-                </g>
-                <rect x="62" y="62" width="76" height="40" rx="4" fill="#f7f3e8" stroke="#cfc6ac" stroke-width="1"/>
-                <rect x="62" y="74" width="76" height="3" fill="#c9a24a"/>
-              </g>
+              <g transform="translate(46,22)"><path d="M8 24 h12 v-10 h-4 V4 h-4 v10 h-4z" fill="#d8a23a"/><rect x="4" y="24" width="20" height="62" rx="6" fill="#e0ad3f" stroke="#a97c1f" stroke-width="1"/><rect x="4" y="46" width="20" height="26" fill="#f4f1e6" stroke="#cfc6ac" stroke-width=".8"/></g>
+              <g transform="translate(76,16)"><path d="M8 24 h12 v-10 h-4 V4 h-4 v10 h-4z" fill="#d8a23a"/><rect x="4" y="24" width="20" height="68" rx="6" fill="#e6b445" stroke="#a97c1f" stroke-width="1"/><rect x="4" y="48" width="20" height="28" fill="#faf7ee" stroke="#cfc6ac" stroke-width=".8"/></g>
+              <g transform="translate(106,16)"><path d="M8 24 h12 v-10 h-4 V4 h-4 v10 h-4z" fill="#d8a23a"/><rect x="4" y="24" width="20" height="68" rx="6" fill="#e6b445" stroke="#a97c1f" stroke-width="1"/><rect x="4" y="48" width="20" height="28" fill="#faf7ee" stroke="#cfc6ac" stroke-width=".8"/></g>
+              <g transform="translate(136,22)"><path d="M8 24 h12 v-10 h-4 V4 h-4 v10 h-4z" fill="#d8a23a"/><rect x="4" y="24" width="20" height="62" rx="6" fill="#e0ad3f" stroke="#a97c1f" stroke-width="1"/><rect x="4" y="46" width="20" height="26" fill="#f4f1e6" stroke="#cfc6ac" stroke-width=".8"/></g>
+              <rect x="62" y="62" width="76" height="40" rx="4" fill="#f7f3e8" stroke="#cfc6ac" stroke-width="1"/>
+              <rect x="62" y="74" width="76" height="3" fill="#c9a24a"/>
             </svg>
           </div>
           <p class="big v">UN SIX</p>
@@ -610,115 +582,92 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
         </div>
       </div>
 
-      <button class="banner" data-rv style="--d:1160ms" data-go="concurso">
+      <button class="banner" data-rv style="--d:980ms" data-go="concurso">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8.5 3.5 4 6v4h3v10h10V10h3V6l-4.5-2.5a3.5 3.5 0 0 1-7 0z"/></svg>
         <p><b>PARTICIPA CON TU MEJOR DISFRAZ</b><span>CREATIVIDAD, ORIGINALIDAD Y ACTITUD.</span></p>
       </button>
-
-      <div class="stackbtn" data-rv style="--d:1260ms">
-        <button class="cta" data-go="boletos">COMPRAR BOLETOS
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
-        </button>
-      </div>
-      <p class="footer">LA VOTACIÓN ES DEL PÚBLICO Y EL JURADO · SE ANUNCIA A LA 1:00 AM</p>
     </div>
   </section>
 
-  <!-- ============ CONCURSO (registro) ============ -->
+  <!-- ============ CONCURSO ============ -->
   <section class="screen" id="s-concurso" aria-label="Registro al concurso">
     <div class="wrap">
       <div class="center">
         <p class="eyebrow" data-rv style="--d:60ms">CONCURSO DE DISFRACES</p>
         <div class="rule" data-rv style="--d:140ms"></div>
         <h2 class="title" data-rv style="--d:220ms">REGISTRA<b>TU DISFRAZ</b></h2>
-        <p class="lead" data-rv style="--d:360ms">APÚNTATE ANTES DE LAS 11:30 PM.<br>LA PASARELA EMPIEZA A LA MEDIANOCHE.</p>
+        <p class="lead" data-rv style="--d:340ms">APÚNTATE ANTES DE LAS 11:30 PM. LA PASARELA EMPIEZA A LA MEDIANOCHE.</p>
       </div>
-      <form class="form" id="formConcurso" novalidate data-rv style="--d:460ms">
-        <div class="field">
-          <label for="cNombre">NOMBRE COMPLETO</label>
-          <input id="cNombre" name="nombre" placeholder="Tu nombre" autocomplete="name">
-        </div>
-        <div class="field">
-          <label for="cDisfraz">¿DE QUÉ VAS DISFRAZADO?</label>
-          <input id="cDisfraz" name="disfraz" placeholder="Ej. astronauta perdido">
-        </div>
-        <div class="field">
-          <label for="cTel">WHATSAPP</label>
-          <input id="cTel" name="tel" inputmode="tel" placeholder="981 000 0000" autocomplete="tel">
-        </div>
+      <form class="form" id="formConcurso" novalidate data-rv style="--d:440ms">
+        <div class="field"><label for="cNombre">NOMBRE COMPLETO</label><input id="cNombre" placeholder="Tu nombre" autocomplete="name"></div>
+        <div class="field"><label for="cDisfraz">¿DE QUÉ VAS DISFRAZADO?</label><input id="cDisfraz" placeholder="Ej. astronauta perdido"></div>
+        <div class="field"><label for="cTel">WHATSAPP</label><input id="cTel" inputmode="tel" placeholder="981 000 0000" autocomplete="tel"></div>
         <p class="err" id="cErr"></p>
-        <button class="cta" type="submit">INSCRIBIRME AL CONCURSO
+        <button class="cta" type="submit">INSCRIBIRME
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
         </button>
       </form>
-      <p class="smallnote" data-rv style="--d:560ms">DEMO: EL REGISTRO SE GUARDA SOLO EN ESTE DISPOSITIVO.</p>
     </div>
   </section>
 
-  <!-- ============ BOLETOS ============ -->
+  <!-- ============ 04 BOLETOS ============ -->
   <section class="screen" id="s-boletos" aria-label="Boletos">
     <div class="wrap">
       <div class="center">
         <p class="eyebrow" data-rv style="--d:60ms">ACCESO A LA NOCHE</p>
         <div class="rule" data-rv style="--d:140ms"></div>
-        <h2 class="title" data-rv style="--d:220ms">BOLETOS<b>GALAXI</b></h2>
-        <p class="lead" data-rv style="--d:360ms">ELIGE TU ACCESO. CUPO LIMITADO.</p>
+        <h2 class="title" data-rv style="--d:220ms">BOLETOS</h2>
       </div>
-
       <div class="tickets" id="tickets" role="group" aria-label="Tipos de boleto">
-        <button class="tk" type="button" data-id="general" data-price="250" aria-pressed="true" data-rv style="--d:440ms">
-          <div>
-            <h3>GENERAL</h3>
-            <ul class="inc"><li>ACCESO A LA PISTA Y AL CONCURSO</li><li>ENTRADA DE 9:00 PM A 3:00 AM</li></ul>
-          </div>
+        <button class="tk" type="button" data-id="general" data-price="250" aria-pressed="true" data-rv style="--d:360ms">
+          <div><h3>GENERAL</h3><ul class="inc"><li>ACCESO A PISTA Y CONCURSO</li><li>9:00 PM A 3:00 AM</li></ul></div>
           <div class="price"><b>$250</b><span>POR PERSONA</span></div>
         </button>
-        <button class="tk" type="button" data-id="vip" data-price="450" aria-pressed="false" data-rv style="--d:520ms">
-          <div>
-            <h3>VIP</h3>
-            <ul class="inc"><li>ACCESO PREFERENTE SIN FILA</li><li>2 BEBIDAS INCLUIDAS</li><li>ZONA ELEVADA FRENTE A CABINA</li></ul>
-            <span class="flag">MÁS VENDIDO</span>
-          </div>
+        <button class="tk" type="button" data-id="vip" data-price="450" aria-pressed="false" data-rv style="--d:430ms">
+          <div><h3>VIP</h3><ul class="inc"><li>ACCESO SIN FILA</li><li>2 BEBIDAS INCLUIDAS</li><li>ZONA FRENTE A CABINA</li></ul><span class="flag">MÁS VENDIDO</span></div>
           <div class="price"><b>$450</b><span>POR PERSONA</span></div>
         </button>
-        <button class="tk" type="button" data-id="mesa" data-price="2500" aria-pressed="false" data-rv style="--d:600ms">
-          <div>
-            <h3>MESA · 6 PERSONAS</h3>
-            <ul class="inc"><li>MESA RESERVADA TODA LA NOCHE</li><li>1 BOTELLA Y MEZCLADORES</li><li>ACCESO VIP PARA 6</li></ul>
-          </div>
+        <button class="tk" type="button" data-id="mesa" data-price="2500" aria-pressed="false" data-rv style="--d:500ms">
+          <div><h3>MESA · 6 PERSONAS</h3><ul class="inc"><li>MESA TODA LA NOCHE</li><li>1 BOTELLA Y MEZCLADORES</li><li>ACCESO VIP PARA 6</li></ul></div>
           <div class="price"><b>$2,500</b><span>POR MESA</span></div>
         </button>
       </div>
-
-      <div class="qtyrow" data-rv style="--d:680ms">
-        <span class="lbl" id="qtyLabel">CANTIDAD</span>
+      <div class="qtyrow" data-rv style="--d:570ms">
+        <span class="lbl" id="qtyLabel">PERSONAS</span>
         <div class="qty">
           <button type="button" id="minus" aria-label="Quitar uno">−</button>
           <b id="qty" aria-live="polite">1</b>
           <button type="button" id="plus" aria-label="Agregar uno">+</button>
         </div>
       </div>
-      <div class="total" data-rv style="--d:720ms"><span>TOTAL</span><b id="total">$250</b></div>
+      <div class="total" data-rv style="--d:620ms"><span>TOTAL</span><b id="total">$250</b></div>
+      <div class="stackbtn" data-rv style="--d:680ms">
+        <button class="cta" data-go="datos">CONTINUAR
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
 
-      <form class="form" id="formBoletos" novalidate data-rv style="--d:800ms">
-        <div class="field">
-          <label for="bNombre">NOMBRE</label>
-          <input id="bNombre" name="nombre" placeholder="Nombre y apellido" autocomplete="name">
-        </div>
-        <div class="field">
-          <label for="bCorreo">CORREO</label>
-          <input id="bCorreo" name="correo" type="email" placeholder="tucorreo@correo.com" autocomplete="email">
-        </div>
-        <div class="field">
-          <label for="bTel">WHATSAPP</label>
-          <input id="bTel" name="tel" inputmode="tel" placeholder="981 000 0000" autocomplete="tel">
-        </div>
+  <!-- ============ 05 DATOS ============ -->
+  <section class="screen" id="s-datos" aria-label="Tus datos">
+    <div class="wrap">
+      <div class="center">
+        <p class="eyebrow" data-rv style="--d:60ms">ÚLTIMO PASO</p>
+        <div class="rule" data-rv style="--d:140ms"></div>
+        <h2 class="title" data-rv style="--d:220ms">TUS DATOS</h2>
+      </div>
+      <div class="resume" data-rv style="--d:320ms" id="resume"><span>GENERAL × 1</span><b>$250</b></div>
+      <form class="form" id="formBoletos" novalidate data-rv style="--d:400ms">
+        <div class="field"><label for="bNombre">NOMBRE</label><input id="bNombre" placeholder="Nombre y apellido" autocomplete="name"></div>
+        <div class="field"><label for="bCorreo">CORREO</label><input id="bCorreo" type="email" placeholder="tucorreo@correo.com" autocomplete="email"></div>
+        <div class="field"><label for="bTel">WHATSAPP</label><input id="bTel" inputmode="tel" placeholder="981 000 0000" autocomplete="tel"></div>
         <p class="err" id="bErr"></p>
         <button class="cta" type="submit">GENERAR MI PASE
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
         </button>
       </form>
-      <p class="smallnote" data-rv style="--d:860ms">DEMO SIN COBRO REAL. AQUÍ SE CONECTA TU PASARELA DE PAGO.</p>
+      <p class="smallnote" data-rv style="--d:470ms">DEMO SIN COBRO REAL. AQUÍ SE CONECTA TU PASARELA DE PAGO.</p>
     </div>
   </section>
 
@@ -727,14 +676,11 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
     <div class="wrap center">
       <div class="ok" data-rv style="--d:60ms">
         <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
-          <circle cx="32" cy="32" r="28" opacity=".35"/>
-          <path d="M20 33.5l8.5 8.5L45 25"/>
+          <circle cx="32" cy="32" r="28" opacity=".35"/><path d="M20 33.5l8.5 8.5L45 25"/>
         </svg>
       </div>
-      <h2 class="title" data-rv style="--d:200ms">PASE<b>CONFIRMADO</b></h2>
-      <p class="lead" data-rv style="--d:340ms">PRESENTA ESTE CÓDIGO EN LA ENTRADA.</p>
-
-      <div class="pass zoomin" data-rv style="--d:440ms">
+      <h2 class="title" data-rv style="--d:180ms">PASE<b>CONFIRMADO</b></h2>
+      <div class="pass zoomin" data-rv style="--d:360ms">
         <div class="ph"><b>GALAXI NIGHT</b><span>SÁB 24 OCT · 9:00 PM</span></div>
         <div class="pb">
           <canvas id="qr" width="300" height="300" aria-label="Código de acceso"></canvas>
@@ -743,253 +689,318 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
           <div class="row"><span>ACCESO</span><b id="pTipo">—</b></div>
           <div class="row"><span>PERSONAS</span><b id="pQty">—</b></div>
           <div class="row"><span>TOTAL</span><b id="pTotal">—</b></div>
-          <div class="row"><span>SEDE</span><b>CAMPECHE · BELLAVISTA</b></div>
         </div>
       </div>
-
-      <div class="stackbtn" data-rv style="--d:600ms">
+      <div class="stackbtn" data-rv style="--d:520ms">
         <button class="cta ghost" id="copyFolio">COPIAR FOLIO</button>
-        <button class="cta ghost" data-go="info">VER UBICACIÓN</button>
       </div>
-      <p class="smallnote" data-rv style="--d:680ms">GUARDA TU FOLIO. EN LA VERSIÓN FINAL LLEGA POR CORREO Y WHATSAPP.</p>
     </div>
   </section>
 
-  <!-- ============ INFO ============ -->
+  <!-- ============ 06 INFO ============ -->
   <section class="screen" id="s-info" aria-label="Información y sede">
     <div class="wrap">
       <div class="center">
         <p class="eyebrow" data-rv style="--d:60ms">TODO LO QUE NECESITAS SABER</p>
         <div class="rule" data-rv style="--d:140ms"></div>
-        <h2 class="title" data-rv style="--d:220ms">INFO<b>Y SEDE</b></h2>
+        <h2 class="title" data-rv style="--d:220ms">INFO Y SEDE</h2>
       </div>
-
-      <div class="map" data-rv style="--d:380ms">
-        <svg viewBox="0 0 600 300" aria-label="Mapa estilizado de la sede">
-          <rect width="600" height="300" fill="#0d0520"/>
-          <g stroke="#2c1150" stroke-width="10" fill="none">
-            <path d="M-10 90 H610"/><path d="M-10 200 H610"/><path d="M120 -10 V310"/><path d="M330 -10 V310"/><path d="M470 -10 V310"/>
-          </g>
-          <g stroke="#1d0a3a" stroke-width="4" fill="none">
-            <path d="M-10 145 H610"/><path d="M225 -10 V310"/><path d="M400 -10 V310"/>
-          </g>
-          <rect x="140" y="105" width="70" height="78" fill="#190a33"/>
-          <rect x="350" y="20" width="100" height="60" fill="#190a33"/>
-          <rect x="490" y="215" width="80" height="70" fill="#190a33"/>
-          <circle cx="330" cy="145" r="46" fill="rgba(176,108,245,.18)"/>
-          <circle cx="330" cy="145" r="26" fill="rgba(176,108,245,.3)"/>
-          <g class="pin" transform="translate(330,145)">
-            <path d="M0 10 C -14 -8, -18 -16, -18 -24 a18 18 0 0 1 36 0 c0 8 -4 16 -18 34z" fill="#b06cf5" stroke="#e3c6ff" stroke-width="2"/>
-            <circle cx="0" cy="-24" r="6.5" fill="#1a0733"/>
-          </g>
-          <text x="330" y="196" text-anchor="middle" fill="#d9a7ff" font-family="Jost,sans-serif" font-size="13" letter-spacing="4">GALAXI NIGHT</text>
-          <text x="330" y="216" text-anchor="middle" fill="#9c86b8" font-family="Jost,sans-serif" font-size="10" letter-spacing="3">COL. BELLAVISTA</text>
-        </svg>
-      </div>
-
-      <div class="infolist">
-        <div class="info" data-rv style="--d:460ms">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
-          <div><b>SEDE</b><p>Col. Bellavista, Campeche.<br>La dirección exacta se envía con tu pase 24 h antes.</p>
-            <button class="copybtn" data-copy="Col. Bellavista, Campeche">COPIAR DIRECCIÓN</button>
+      <div class="infowrap">
+        <div class="map" data-rv style="--d:340ms">
+          <svg viewBox="0 0 600 300" aria-label="Mapa estilizado de la sede">
+            <rect width="600" height="300" fill="#0d0520"/>
+            <g stroke="#2c1150" stroke-width="10" fill="none"><path d="M-10 90 H610"/><path d="M-10 200 H610"/><path d="M120 -10 V310"/><path d="M330 -10 V310"/><path d="M470 -10 V310"/></g>
+            <g stroke="#1d0a3a" stroke-width="4" fill="none"><path d="M-10 145 H610"/><path d="M225 -10 V310"/><path d="M400 -10 V310"/></g>
+            <rect x="140" y="105" width="70" height="78" fill="#190a33"/>
+            <rect x="350" y="20" width="100" height="60" fill="#190a33"/>
+            <rect x="490" y="215" width="80" height="70" fill="#190a33"/>
+            <circle cx="330" cy="145" r="46" fill="rgba(176,108,245,.18)"/><circle cx="330" cy="145" r="26" fill="rgba(176,108,245,.3)"/>
+            <g class="pin" transform="translate(330,145)">
+              <path d="M0 10 C -14 -8, -18 -16, -18 -24 a18 18 0 0 1 36 0 c0 8 -4 16 -18 34z" fill="#b06cf5" stroke="#e3c6ff" stroke-width="2"/>
+              <circle cx="0" cy="-24" r="6.5" fill="#1a0733"/>
+            </g>
+            <text x="330" y="196" text-anchor="middle" fill="#d9a7ff" font-family="Jost,sans-serif" font-size="13" letter-spacing="4">GALAXI NIGHT</text>
+            <text x="330" y="216" text-anchor="middle" fill="#9c86b8" font-family="Jost,sans-serif" font-size="10" letter-spacing="3">COL. BELLAVISTA</text>
+          </svg>
+        </div>
+        <div class="infolist">
+          <div class="info" data-rv style="--d:420ms">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+            <div><b>SEDE</b><p>Col. Bellavista, Campeche. Dirección exacta con tu pase.</p>
+              <button class="copybtn" data-copy="Col. Bellavista, Campeche">COPIAR DIRECCIÓN</button></div>
+          </div>
+          <div class="info" data-rv style="--d:470ms">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.4l3.4 2"/></svg>
+            <div><b>HORARIOS</b><p>Puertas 9:00 PM · Concurso 12:00 AM · Ganadores 1:00 AM · Cierre 3:00 AM</p></div>
+          </div>
+          <div class="info" data-rv style="--d:520ms">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8.5 3.5 4 6v4h3v10h10V10h3V6l-4.5-2.5a3.5 3.5 0 0 1-7 0z"/></svg>
+            <div><b>VESTIMENTA</b><p>Disfraz o total black. Sin disfraz entras, pero no compites por premios.</p></div>
+          </div>
+          <div class="info" data-rv style="--d:570ms">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3.5 7.5 12 13l8.5-5.5"/></svg>
+            <div><b>CONTACTO</b><p>WhatsApp 981 000 0000 · hola@galaxinight.mx · Mayores de 18 con identificación.</p>
+              <button class="copybtn" data-copy="9810000000">COPIAR WHATSAPP</button></div>
           </div>
         </div>
-        <div class="info" data-rv style="--d:520ms">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.4l3.4 2"/></svg>
-          <div><b>HORARIOS</b><p>Puertas 9:00 PM · Concurso 12:00 AM<br>Ganadores 1:00 AM · Cierre 3:00 AM</p></div>
-        </div>
-        <div class="info" data-rv style="--d:580ms">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8.5 3.5 4 6v4h3v10h10V10h3V6l-4.5-2.5a3.5 3.5 0 0 1-7 0z"/></svg>
-          <div><b>CÓDIGO DE VESTIMENTA</b><p>Disfraz o total black. Sin disfraz también entras, pero no compites por los premios.</p></div>
-        </div>
-        <div class="info" data-rv style="--d:640ms">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3.5 7.5 12 13l8.5-5.5"/></svg>
-          <div><b>CONTACTO</b><p>WhatsApp 981 000 0000<br>hola@galaxinight.mx</p>
-            <button class="copybtn" data-copy="9810000000">COPIAR WHATSAPP</button>
-          </div>
-        </div>
-        <div class="info" data-rv style="--d:700ms">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3 4 6v6c0 5 3.4 8.3 8 9 4.6-.7 8-4 8-9V6z"/><path d="M9.5 12.2 11.4 14l3.4-3.6"/></svg>
-          <div><b>ACCESO</b><p>Mayores de 18 con identificación oficial.<br>Prohibido el ingreso con bebidas o envases.</p></div>
-        </div>
-      </div>
-
-      <div class="stackbtn" data-rv style="--d:780ms">
-        <button class="cta" data-go="boletos">COMPRAR BOLETOS
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
-        </button>
       </div>
     </div>
   </section>
 
-  <!-- ============ FAQ ============ -->
+  <!-- ============ 07 FAQ ============ -->
   <section class="screen" id="s-faq" aria-label="Preguntas frecuentes">
     <div class="wrap">
       <div class="center">
         <p class="eyebrow" data-rv style="--d:60ms">ANTES DE LA NOCHE</p>
         <div class="rule" data-rv style="--d:140ms"></div>
-        <h2 class="title" data-rv style="--d:220ms">PREGUNTAS<b>FRECUENTES</b></h2>
+        <h2 class="title" data-rv style="--d:220ms">PREGUNTAS</h2>
       </div>
       <div class="faq" id="faq">
-        <div class="qa" open-state="0" data-rv style="--d:360ms">
+        <div class="qa" data-open="0" data-rv style="--d:330ms">
           <button type="button">¿NECESITO IR DISFRAZADO?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
-          <div class="ans"><div><p>No es obligatorio para entrar, pero solo los disfrazados compiten por el primer, segundo y tercer lugar.</p></div></div>
+          <div class="ans"><div><p>No es obligatorio para entrar, pero solo los disfrazados compiten por los tres lugares.</p></div></div>
         </div>
-        <div class="qa" open-state="0" data-rv style="--d:420ms">
+        <div class="qa" data-open="0" data-rv style="--d:380ms">
           <button type="button">¿CÓMO SE ELIGEN LOS GANADORES?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
-          <div class="ans"><div><p>Pasarela a las 12:00 AM. Se califica creatividad, originalidad y actitud; cuenta el aplauso del público y el voto del jurado. Resultados a la 1:00 AM.</p></div></div>
+          <div class="ans"><div><p>Pasarela a las 12:00 AM. Cuenta creatividad, originalidad y actitud, con aplauso del público y voto del jurado. Resultados a la 1:00 AM.</p></div></div>
         </div>
-        <div class="qa" open-state="0" data-rv style="--d:480ms">
+        <div class="qa" data-open="0" data-rv style="--d:430ms">
           <button type="button">¿PUEDO PAGAR EN LA ENTRADA?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
-          <div class="ans"><div><p>Sí, mientras quede cupo. Comprando en línea aseguras tu lugar y entras por la fila rápida.</p></div></div>
+          <div class="ans"><div><p>Sí, mientras quede cupo. En línea aseguras tu lugar y entras por la fila rápida.</p></div></div>
         </div>
-        <div class="qa" open-state="0" data-rv style="--d:540ms">
+        <div class="qa" data-open="0" data-rv style="--d:480ms">
           <button type="button">¿EL BOLETO INCLUYE BEBIDAS?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
-          <div class="ans"><div><p>El General no incluye. El VIP incluye dos bebidas y la Mesa incluye una botella con mezcladores.</p></div></div>
+          <div class="ans"><div><p>El General no incluye. El VIP incluye dos bebidas y la Mesa una botella con mezcladores.</p></div></div>
         </div>
-        <div class="qa" open-state="0" data-rv style="--d:600ms">
+        <div class="qa" data-open="0" data-rv style="--d:530ms">
           <button type="button">¿PUEDO TRANSFERIR MI PASE?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
-          <div class="ans"><div><p>Sí. El folio es el que vale en la puerta; mándaselo a quien vaya en tu lugar y que lleve identificación.</p></div></div>
+          <div class="ans"><div><p>Sí. En la puerta vale el folio: mándaselo a quien vaya en tu lugar con su identificación.</p></div></div>
         </div>
-        <div class="qa" open-state="0" data-rv style="--d:660ms">
+        <div class="qa" data-open="0" data-rv style="--d:580ms">
           <button type="button">¿HAY ESTACIONAMIENTO?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
           <div class="ans"><div><p>Hay cajones sobre la avenida y estacionamiento vigilado a una cuadra. Si vas a tomar, pide transporte.</p></div></div>
         </div>
       </div>
-      <div class="stackbtn" data-rv style="--d:740ms">
+      <div class="stackbtn" data-rv style="--d:640ms">
         <button class="cta" data-go="boletos">COMPRAR BOLETOS
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
         </button>
       </div>
-      <p class="footer">GALAXI NIGHT · CAMPECHE · 2026<br>DEMO INTERACTIVA</p>
+      <p class="footnote">GALAXI NIGHT · CAMPECHE · 2026 · DEMO</p>
     </div>
   </section>
-</main>
+</div>
 
+<div class="swipe" id="swipe">
+  <button class="circ" id="nextBtn" aria-label="Siguiente pantalla">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+  <small>DESLIZA</small>
+</div>
+<div class="dots" id="dots" role="tablist" aria-label="Secciones"></div>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
 (function(){
   "use strict";
-  /* ---------- fondo generado ---------- */
-  var stars=document.getElementById('stars'),h='';
-  for(var i=0;i<130;i++){
-    var s=(Math.random()*2+.6).toFixed(2);
-    h+='<i style="left:'+(Math.random()*100).toFixed(2)+'%;top:'+(Math.random()*78).toFixed(2)+'%;width:'+s+'px;height:'+s+'px;animation-duration:'+(2+Math.random()*4).toFixed(2)+'s;animation-delay:'+(Math.random()*4).toFixed(2)+'s"></i>';
-  }
-  stars.innerHTML=h;
 
-  var beams=document.getElementById('beams'),b='',angles=[-42,-28,-14,14,28,42];
+  /* ========== FONDO GENERADO ========== */
+  var h='';
+  for(var i=0;i<120;i++){
+    var sz=(Math.random()*2+.6).toFixed(2);
+    h+='<i style="left:'+(Math.random()*100).toFixed(2)+'%;top:'+(Math.random()*78).toFixed(2)+'%;width:'+sz+'px;height:'+sz+'px;animation-duration:'+(2+Math.random()*4).toFixed(2)+'s;animation-delay:'+(Math.random()*4).toFixed(2)+'s"></i>';
+  }
+  document.getElementById('stars').innerHTML=h;
+
+  var b='',angles=[-42,-28,-14,14,28,42];
   for(var j=0;j<angles.length;j++){
-    b+='<div class="beam" style="transform:translateX(-50%) rotate('+angles[j]+'deg);animation-delay:'+(j*.7).toFixed(1)+'s;opacity:'+(.55+Math.random()*.4).toFixed(2)+'"></div>';
+    b+='<div class="beam" style="transform:translateX(-50%) rotate('+angles[j]+'deg);animation-delay:'+(j*.7).toFixed(1)+'s;opacity:'+(.5+Math.random()*.4).toFixed(2)+'"></div>';
   }
-  beams.innerHTML=b;
+  document.getElementById('beams').innerHTML=b;
 
-  // multitud: cabezas + brazos levantados
-  var crowd=document.getElementById('crowd'),c='<rect x="0" y="210" width="1200" height="50" fill="#05020b"/>';
-  for(var k=0;k<170;k++){
-    var x=Math.random()*1200, depth=Math.random(), y=200-depth*34, sc=.6+depth*.75;
+  var c='<rect x="0" y="212" width="1200" height="48" fill="#05020b"/>';
+  for(var k=0;k<160;k++){
+    var x=Math.random()*1200, depth=Math.random(), y=200-depth*32, sc=.6+depth*.7;
     var col=depth>.55?'#07030e':'#0d0620';
     c+='<g transform="translate('+x.toFixed(1)+','+y.toFixed(1)+') scale('+sc.toFixed(2)+')" fill="'+col+'">';
     c+='<circle cx="0" cy="0" r="7"/><path d="M-10 9 q10 -5 20 0 l3 40 h-26z"/>';
     if(Math.random()<.5){
-      var a1=(-20-Math.random()*25).toFixed(0), a2=(20+Math.random()*25).toFixed(0);
-      c+='<path d="M-9 12 l-7 -26" stroke="'+col+'" stroke-width="5" stroke-linecap="round" transform="rotate('+a1+' -9 12)"/>';
-      c+='<path d="M9 12 l7 -26" stroke="'+col+'" stroke-width="5" stroke-linecap="round" transform="rotate('+a2+' 9 12)"/>';
+      c+='<path d="M-9 12 l-7 -26" stroke="'+col+'" stroke-width="5" stroke-linecap="round" transform="rotate('+(-20-Math.random()*24).toFixed(0)+' -9 12)"/>';
+      c+='<path d="M9 12 l7 -26" stroke="'+col+'" stroke-width="5" stroke-linecap="round" transform="rotate('+(20+Math.random()*24).toFixed(0)+' 9 12)"/>';
     }
     c+='</g>';
   }
-  crowd.innerHTML=c;
+  document.getElementById('crowd').innerHTML=c;
 
-  /* ---------- navegación entre pantallas ---------- */
-  var ORDER=['inicio','experiencia','premios','concurso','boletos','pase','info','faq'];
-  var TITLES={inicio:'INICIO',experiencia:'EXPERIENCIA',premios:'PREMIOS',concurso:'CONCURSO',boletos:'BOLETOS',pase:'TU PASE',info:'INFO Y SEDE',faq:'PREGUNTAS'};
-  var current='inicio';
+  /* ========== MAPA DE PANTALLAS ========== */
+  // deck = recorrido principal (puntos laterales); los demás se abren con botones
+  var DECK=['inicio','experiencia','premios','boletos','datos','info','faq'];
+  var NAV={
+    inicio:{next:'experiencia',prev:null},
+    experiencia:{next:'premios',prev:'inicio'},
+    premios:{next:'boletos',prev:'experiencia'},
+    concurso:{next:'boletos',prev:'premios'},
+    boletos:{next:'datos',prev:'premios'},
+    datos:{next:'info',prev:'boletos'},
+    pase:{next:'info',prev:'datos'},
+    info:{next:'faq',prev:'datos'},
+    faq:{next:null,prev:'info'}
+  };
+  var current='inicio', busy=false;
+
+  /* ========== ALTURA REAL Y AUTOAJUSTE ========== */
+  function setVH(){
+    var vv=window.visualViewport;
+    var hgt=(vv && Math.abs(vv.height-window.innerHeight)<160)?vv.height:window.innerHeight;
+    document.documentElement.style.setProperty('--vh',hgt+'px');
+  }
+  function fit(id){
+    var sc=document.getElementById('s-'+(id||current)); if(!sc) return;
+    var w=sc.querySelector('.wrap'); if(!w) return;
+    w.style.transform='none';
+    var cs=getComputedStyle(sc);
+    var availH=sc.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
+    var availW=sc.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
+    var rect=w.getBoundingClientRect();
+    var sH=availH/rect.height, sW=availW/rect.width;
+    var s=Math.min(1,sH,sW);
+    w.style.transform = s<0.999 ? 'scale('+s.toFixed(4)+')' : 'none';
+  }
+  function refit(){ setVH(); fit(); }
+
+  /* ========== NAVEGACIÓN ========== */
   var ctx=document.getElementById('ctxBtn');
   var ARROW_L='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 12H5M11 6l-6 6 6 6"/></svg>';
   var ARROW_R='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
   var TROPHY='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3M9 20h6M12 14v6"/></svg>';
-
-  function setCtx(){
+  function setChrome(){
     if(current==='inicio'){ ctx.innerHTML=TROPHY+'<span>VER PREMIOS</span>'+ARROW_R; ctx.dataset.act='premios'; }
     else { ctx.innerHTML=ARROW_L+'<span>REGRESAR</span>'; ctx.dataset.act='back'; }
+    var sw=document.getElementById('swipe');
+    sw.hidden = !NAV[current] || !NAV[current].next;
+    document.body.classList.toggle('show-upcue', !!(NAV[current] && NAV[current].prev));
+    var ds=document.querySelectorAll('.dots button');
+    for(var i=0;i<ds.length;i++) ds[i].setAttribute('aria-current', ds[i].dataset.id===current?'true':'false');
+    var links=document.querySelectorAll('[data-nav]');
+    for(var l=0;l<links.length;l++) links[l].setAttribute('aria-current', links[l].dataset.nav===current?'true':'false');
+    var idx=DECK.indexOf(current); if(idx<0) idx=2;
+    document.getElementById('moon').style.transform='translate(-50%,0) translateY('+(idx*-16)+'px) scale('+(1+idx*.03).toFixed(2)+')';
   }
-  var history_=[];
-  function go(id,push){
-    if(!document.getElementById('s-'+id)||id===current) { closeMenu(); return; }
-    if(push!==false) history_.push(current);
+  function go(id,dir){
+    if(busy || !id || id===current) { closeMenu(); return; }
+    var next=document.getElementById('s-'+id); if(!next) return;
+    busy=true;
     var prev=document.getElementById('s-'+current);
     if(prev) prev.classList.remove('is-active');
     current=id;
-    var next=document.getElementById('s-'+id);
-    // reinicia animaciones de entrada
-    var rv=next.querySelectorAll('[data-rv]');
-    for(var i=0;i<rv.length;i++){ rv[i].style.animation='none'; }
-    void next.offsetWidth;
-    for(var n=0;n<rv.length;n++){ rv[n].style.animation=''; }
+    next.style.setProperty('--dir', (dir==='up'?'-34px':'34px'));
     next.classList.add('is-active');
-    window.scrollTo(0,0);
-    setCtx();
-    document.getElementById('moon').style.transform='translate(-50%,0) translateY('+(ORDER.indexOf(id)*-14)+'px) scale('+(1+ORDER.indexOf(id)*.03).toFixed(2)+')';
-    var links=document.querySelectorAll('[data-nav]');
-    for(var l=0;l<links.length;l++){ links[l].setAttribute('aria-current', links[l].dataset.nav===id ? 'true':'false'); }
-    try{ if(/^[a-z]+$/.test(id)) location.hash=id; }catch(e){}
+    setChrome();
+    fit(id);
+    try{ if(/^[a-z]+$/.test(id)) history.replaceState(null,'','#'+id); }catch(e){}
     closeMenu();
+    setTimeout(function(){ busy=false; fit(id); },520);
   }
-  function back(){
-    var p=history_.pop();
-    go(p||'inicio',false);
-  }
+  function next(){ var n=NAV[current]&&NAV[current].next; if(n) go(n,'down'); }
+  function prevScreen(){ var p=NAV[current]&&NAV[current].prev; if(p) go(p,'up'); }
 
-  document.addEventListener('click',function(e){
-    var t=e.target.closest('[data-go]');
-    if(t){ go(t.getAttribute('data-go')); return; }
-    var nav=e.target.closest('[data-nav]');
-    if(nav){ e.preventDefault(); go(nav.getAttribute('data-nav')); return; }
-    if(e.target.closest('[data-close]')){ closeMenu(); return; }
-    var cp=e.target.closest('[data-copy]');
-    if(cp){ copy(cp.getAttribute('data-copy'),'COPIADO'); return; }
+  /* ========== GESTOS ========== */
+  function isField(t){ return t && t.closest && t.closest('input,textarea,select,.drawer'); }
+  var lastWheel=0;
+  window.addEventListener('wheel',function(e){
+    if(document.body.classList.contains('menu-open')) return;
+    var now=Date.now();
+    if(Math.abs(e.deltaY)<12 || now-lastWheel<680) return;
+    lastWheel=now;
+    e.deltaY>0?next():prevScreen();
+  },{passive:true});
+
+  var ty=0,tx=0,tt=0,moved=false;
+  document.addEventListener('touchstart',function(e){
+    if(isField(e.target)||document.body.classList.contains('menu-open')) {ty=null;return;}
+    ty=e.touches[0].clientY; tx=e.touches[0].clientX; tt=Date.now(); moved=false;
+  },{passive:true});
+  document.addEventListener('touchmove',function(e){
+    if(ty===null) return;
+    moved=true;
+    if(e.cancelable) e.preventDefault();
+  },{passive:false});
+  document.addEventListener('touchend',function(e){
+    if(ty===null||!moved) return;
+    var t=e.changedTouches[0];
+    var dy=t.clientY-ty, dx=t.clientX-tx, dt=Date.now()-tt;
+    if(Math.abs(dy)>Math.abs(dx) && (Math.abs(dy)>52 || (Math.abs(dy)>28 && dt<260))){
+      dy<0?next():prevScreen();
+    }
+    ty=null;
+  },{passive:true});
+
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){ closeMenu(); return; }
+    if(isField(e.target)) return;
+    if(e.key==='ArrowDown'||e.key==='PageDown'||e.key===' '){ e.preventDefault(); next(); }
+    if(e.key==='ArrowUp'||e.key==='PageUp'){ e.preventDefault(); prevScreen(); }
   });
-  ctx.addEventListener('click',function(){ ctx.dataset.act==='back'?back():go('premios'); });
-  document.getElementById('goHome').addEventListener('click',function(){ go('inicio'); });
 
-  /* ---------- menú ---------- */
+  /* ========== CLICS ========== */
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('[data-go]'); if(t){ go(t.getAttribute('data-go'),'down'); return; }
+    var nav=e.target.closest('[data-nav]'); if(nav){ e.preventDefault(); go(nav.getAttribute('data-nav'),'down'); return; }
+    if(e.target.closest('[data-close]')){ closeMenu(); return; }
+    var cp=e.target.closest('[data-copy]'); if(cp){ copy(cp.getAttribute('data-copy'),'COPIADO'); return; }
+  });
+  document.getElementById('nextBtn').addEventListener('click',next);
+  ctx.addEventListener('click',function(){ ctx.dataset.act==='back'?prevScreen():go('premios','down'); });
+  document.getElementById('goHome').addEventListener('click',function(){ go('inicio','up'); });
+
+  /* ========== PUNTOS LATERALES ========== */
+  var dots=document.getElementById('dots'),dh='';
+  var LBL={inicio:'Inicio',experiencia:'Experiencia',premios:'Premios',boletos:'Boletos',datos:'Tus datos',info:'Info y sede',faq:'Preguntas'};
+  for(var d=0;d<DECK.length;d++) dh+='<button type="button" data-id="'+DECK[d]+'" aria-label="'+LBL[DECK[d]]+'"></button>';
+  dots.innerHTML=dh;
+  dots.addEventListener('click',function(e){
+    var btn=e.target.closest('button'); if(!btn) return;
+    var from=DECK.indexOf(current), to=DECK.indexOf(btn.dataset.id);
+    go(btn.dataset.id, to<from?'up':'down');
+  });
+
+  /* ========== MENÚ ========== */
   var burger=document.getElementById('burger');
   function closeMenu(){ document.body.classList.remove('menu-open'); burger.setAttribute('aria-expanded','false'); }
   burger.addEventListener('click',function(){
     var open=document.body.classList.toggle('menu-open');
     burger.setAttribute('aria-expanded',open?'true':'false');
   });
-  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeMenu(); });
 
-  /* ---------- cuenta regresiva ---------- */
+  /* ========== CUENTA REGRESIVA ========== */
   var target=new Date('2026-10-24T21:00:00-06:00').getTime();
+  function p2(n){ return n<10?'0'+n:''+n; }
   function tick(){
-    var d=target-Date.now(); if(d<0) d=0;
-    var days=Math.floor(d/864e5), hrs=Math.floor(d%864e5/36e5), min=Math.floor(d%36e5/6e4), sec=Math.floor(d%6e4/1e3);
-    function p(n){ return n<10?'0'+n:''+n; }
-    document.getElementById('cd').textContent=p(days);
-    document.getElementById('ch').textContent=p(hrs);
-    document.getElementById('cm').textContent=p(min);
-    document.getElementById('cs').textContent=p(sec);
+    var dd=target-Date.now(); if(dd<0) dd=0;
+    document.getElementById('cd').textContent=p2(Math.floor(dd/864e5));
+    document.getElementById('ch').textContent=p2(Math.floor(dd%864e5/36e5));
+    document.getElementById('cm').textContent=p2(Math.floor(dd%36e5/6e4));
+    document.getElementById('cs').textContent=p2(Math.floor(dd%6e4/1e3));
   }
   tick(); setInterval(tick,1000);
 
-  /* ---------- boletos ---------- */
+  /* ========== BOLETOS ========== */
   var sel={id:'general',price:250,name:'GENERAL'}, qty=1;
-  var qtyEl=document.getElementById('qty'), totalEl=document.getElementById('total'), qtyLabel=document.getElementById('qtyLabel');
+  var qtyEl=document.getElementById('qty'), totalEl=document.getElementById('total'),
+      qtyLabel=document.getElementById('qtyLabel'), resume=document.getElementById('resume');
   function money(n){ return '$'+n.toLocaleString('es-MX'); }
   function render(){
     qtyEl.textContent=qty;
     totalEl.textContent=money(sel.price*qty);
     qtyLabel.textContent = sel.id==='mesa' ? 'MESAS' : 'PERSONAS';
+    resume.innerHTML='<span>'+sel.name+' × '+qty+'</span><b>'+money(sel.price*qty)+'</b>';
   }
   var tks=document.querySelectorAll('.tk');
   for(var ti=0;ti<tks.length;ti++){
     tks[ti].addEventListener('click',function(){
       for(var z=0;z<tks.length;z++) tks[z].setAttribute('aria-pressed','false');
       this.setAttribute('aria-pressed','true');
-      sel={id:this.dataset.id, price:parseInt(this.dataset.price,10), name:this.querySelector('h3').textContent.trim()};
+      sel={id:this.dataset.id,price:parseInt(this.dataset.price,10),name:this.querySelector('h3').textContent.trim()};
       render();
     });
   }
@@ -997,47 +1008,46 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
   document.getElementById('minus').addEventListener('click',function(){ if(qty>1){qty--;render();} });
   render();
 
-  /* ---------- toast ---------- */
-  var toastEl=document.getElementById('toast'), toastT;
+  /* ========== TOAST / COPIAR ========== */
+  var toastEl=document.getElementById('toast'),toastT;
   function toast(msg){
     toastEl.textContent=msg; toastEl.classList.add('show');
     clearTimeout(toastT); toastT=setTimeout(function(){ toastEl.classList.remove('show'); },2600);
   }
   function copy(text,msg){
-    try{
-      navigator.clipboard.writeText(text).then(function(){ toast(msg); },function(){ toast('COPIA MANUAL: '+text); });
-    }catch(e){ toast('COPIA MANUAL: '+text); }
+    try{ navigator.clipboard.writeText(text).then(function(){ toast(msg); },function(){ toast(text); }); }
+    catch(e){ toast(text); }
   }
 
-  /* ---------- QR decorativo determinista ---------- */
+  /* ========== QR DECORATIVO ========== */
   function drawQR(seed){
     var cv=document.getElementById('qr'); if(!cv) return;
-    var ctx2=cv.getContext('2d'), N=25, cell=cv.width/N;
-    ctx2.fillStyle='#fff'; ctx2.fillRect(0,0,cv.width,cv.height);
-    var s=0; for(var i=0;i<seed.length;i++) s=(s*31+seed.charCodeAt(i))>>>0;
+    var g=cv.getContext('2d'), N=25, cell=cv.width/N, s=0;
+    g.fillStyle='#fff'; g.fillRect(0,0,cv.width,cv.height);
+    for(var i=0;i<seed.length;i++) s=(s*31+seed.charCodeAt(i))>>>0;
     function rnd(){ s=(s*1664525+1013904223)>>>0; return s/4294967296; }
-    ctx2.fillStyle='#0b0419';
+    g.fillStyle='#0b0419';
     for(var y=0;y<N;y++) for(var x=0;x<N;x++){
-      var inEye=(x<7&&y<7)||(x>N-8&&y<7)||(x<7&&y>N-8);
-      if(inEye) continue;
-      if(rnd()>.52) ctx2.fillRect(x*cell,y*cell,cell,cell);
+      if((x<7&&y<7)||(x>N-8&&y<7)||(x<7&&y>N-8)) continue;
+      if(rnd()>.52) g.fillRect(x*cell,y*cell,cell,cell);
     }
     function eye(ox,oy){
-      ctx2.fillStyle='#0b0419'; ctx2.fillRect(ox*cell,oy*cell,7*cell,7*cell);
-      ctx2.fillStyle='#fff'; ctx2.fillRect((ox+1)*cell,(oy+1)*cell,5*cell,5*cell);
-      ctx2.fillStyle='#0b0419'; ctx2.fillRect((ox+2)*cell,(oy+2)*cell,3*cell,3*cell);
+      g.fillStyle='#0b0419'; g.fillRect(ox*cell,oy*cell,7*cell,7*cell);
+      g.fillStyle='#fff'; g.fillRect((ox+1)*cell,(oy+1)*cell,5*cell,5*cell);
+      g.fillStyle='#0b0419'; g.fillRect((ox+2)*cell,(oy+2)*cell,3*cell,3*cell);
     }
     eye(0,0); eye(N-7,0); eye(0,N-7);
   }
+  drawQR('GN-DEMO');
 
-  /* ---------- formularios ---------- */
+  /* ========== FORMULARIOS ========== */
   function val(id){ return document.getElementById(id).value.trim(); }
   document.getElementById('formBoletos').addEventListener('submit',function(e){
     e.preventDefault();
-    var err=document.getElementById('bErr'), n=val('bNombre'), c=val('bCorreo'), t=val('bTel');
-    if(n.length<3){ err.textContent='ESCRIBE TU NOMBRE COMPLETO.'; document.getElementById('bNombre').focus(); return; }
-    if(!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(c)){ err.textContent='REVISA TU CORREO.'; document.getElementById('bCorreo').focus(); return; }
-    if(t.replace(/\D/g,'').length<10){ err.textContent='EL WHATSAPP NECESITA 10 DÍGITOS.'; document.getElementById('bTel').focus(); return; }
+    var err=document.getElementById('bErr'), n=val('bNombre'), co=val('bCorreo'), tl=val('bTel');
+    if(n.length<3){ err.textContent='ESCRIBE TU NOMBRE COMPLETO.'; return; }
+    if(!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(co)){ err.textContent='REVISA TU CORREO.'; return; }
+    if(tl.replace(/\D/g,'').length<10){ err.textContent='EL WHATSAPP NECESITA 10 DÍGITOS.'; return; }
     err.textContent='';
     var folio='GN-24-'+Math.random().toString(36).slice(2,7).toUpperCase();
     document.getElementById('pFolio').textContent=folio;
@@ -1046,42 +1056,57 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
     document.getElementById('pQty').textContent=qty+(sel.id==='mesa'?(qty>1?' MESAS':' MESA'):(qty>1?' PERSONAS':' PERSONA'));
     document.getElementById('pTotal').textContent=money(sel.price*qty);
     drawQR(folio+n);
-    try{ localStorage.setItem('gn_pase',JSON.stringify({folio:folio,n:n,tipo:sel.name,qty:qty})); }catch(e2){}
-    go('pase');
+    try{ localStorage.setItem('gn_pase',JSON.stringify({folio:folio,n:n})); }catch(e2){}
+    if(document.activeElement&&document.activeElement.blur) document.activeElement.blur();
+    go('pase','down');
     toast('PASE GENERADO · '+folio);
   });
   document.getElementById('copyFolio').addEventListener('click',function(){
     copy(document.getElementById('pFolio').textContent,'FOLIO COPIADO');
   });
-
   document.getElementById('formConcurso').addEventListener('submit',function(e){
     e.preventDefault();
-    var err=document.getElementById('cErr'), n=val('cNombre'), d=val('cDisfraz'), t=val('cTel');
+    var err=document.getElementById('cErr'), n=val('cNombre'), ds=val('cDisfraz'), tl=val('cTel');
     if(n.length<3){ err.textContent='ESCRIBE TU NOMBRE.'; return; }
-    if(d.length<3){ err.textContent='CUÉNTANOS DE QUÉ VAS DISFRAZADO.'; return; }
-    if(t.replace(/\D/g,'').length<10){ err.textContent='EL WHATSAPP NECESITA 10 DÍGITOS.'; return; }
+    if(ds.length<3){ err.textContent='CUÉNTANOS DE QUÉ VAS DISFRAZADO.'; return; }
+    if(tl.replace(/\D/g,'').length<10){ err.textContent='EL WHATSAPP NECESITA 10 DÍGITOS.'; return; }
     err.textContent='';
-    try{ localStorage.setItem('gn_concurso',JSON.stringify({n:n,d:d,t:t})); }catch(e2){}
-    toast('¡INSCRITO! NOS VEMOS EN LA PASARELA');
+    if(document.activeElement&&document.activeElement.blur) document.activeElement.blur();
     this.reset();
-    go('premios');
+    toast('¡INSCRITO! NOS VEMOS EN LA PASARELA');
+    go('premios','up');
   });
 
-  /* ---------- FAQ ---------- */
+  /* ========== FAQ ========== */
   document.getElementById('faq').addEventListener('click',function(e){
     var btn=e.target.closest('button'); if(!btn) return;
-    var qa=btn.parentElement, open=qa.getAttribute('open-state')==='1';
+    var qa=btn.parentElement, open=qa.getAttribute('data-open')==='1';
     var all=this.querySelectorAll('.qa');
-    for(var i=0;i<all.length;i++) all[i].setAttribute('open-state','0');
-    qa.setAttribute('open-state', open?'0':'1');
+    for(var i=0;i<all.length;i++) all[i].setAttribute('data-open','0');
+    qa.setAttribute('data-open', open?'0':'1');
+    setTimeout(function(){ fit('faq'); },60);
+    setTimeout(function(){ fit('faq'); },440);
   });
 
-  /* ---------- arranque ---------- */
+  /* ========== RESIZE ========== */
+  var rt;
+  function onResize(){
+    if(document.activeElement && /INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
+    clearTimeout(rt); rt=setTimeout(refit,120);
+  }
+  window.addEventListener('resize',onResize);
+  window.addEventListener('orientationchange',function(){ setTimeout(refit,260); });
+  if(window.visualViewport) window.visualViewport.addEventListener('resize',onResize);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(refit);
+
+  /* ========== ARRANQUE ========== */
+  setVH();
   var start='inicio';
-  try{ var hs=(location.hash||'').replace('#',''); if(ORDER.indexOf(hs)>-1 && hs!=='pase') start=hs; }catch(e){}
-  drawQR('GN-DEMO');
+  try{ var hs=(location.hash||'').replace('#',''); if(NAV[hs] && hs!=='pase') start=hs; }catch(e){}
+  current=start;
   document.getElementById('s-'+start).classList.add('is-active');
-  current=start; setCtx();
+  setChrome();
+  requestAnimationFrame(function(){ fit(start); setTimeout(function(){ fit(start); },350); });
 })();
 </script>
 </body>
