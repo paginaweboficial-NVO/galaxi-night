@@ -259,18 +259,30 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
 .resume b{font-weight:400;color:var(--violet-bright)}
 
 /* ---------- PAGO ---------- */
-.bank{margin-top:16px;border-radius:14px;border:1px solid rgba(176,108,245,.3);background:rgba(18,8,34,.62);
-  padding:clamp(13px,3vw,18px);display:grid;gap:10px;text-align:left}
-.bank .brow{display:flex;align-items:center;justify-content:space-between;gap:10px;
-  padding-bottom:9px;border-bottom:1px solid rgba(176,108,245,.14)}
-.bank .brow:last-child{border-bottom:0;padding-bottom:0}
-.bank .brow span{font-size:clamp(7.5px,2vw,9.5px);letter-spacing:.22em;color:var(--muted);flex:none}
-.bank .brow b{font-weight:400;font-size:clamp(10px,2.6vw,13px);letter-spacing:.06em;text-align:right;
-  font-variant-numeric:tabular-nums;min-width:0;word-break:break-word}
-.bank .brow b.v{color:var(--violet-bright)}
-.copybtn{padding:6px 11px;border-radius:999px;border:1px solid rgba(176,108,245,.45);flex:none;
-  font-size:clamp(7px,1.9vw,9px);letter-spacing:.16em;color:var(--violet-bright);transition:background .25s}
-.copybtn:hover{background:rgba(109,40,217,.3)}
+.step{display:flex;align-items:center;gap:9px;margin:18px 0 9px;text-align:left}
+.step i{width:21px;height:21px;border-radius:50%;border:1px solid var(--violet);display:grid;place-items:center;
+  font-style:normal;font-size:10px;color:var(--violet-bright);flex:none}
+.step b{font-weight:400;font-size:clamp(8.5px,2.3vw,11px);letter-spacing:.2em;color:#fff}
+.amount{border-radius:14px;border:1px solid var(--violet);background:rgba(45,16,84,.42);padding:clamp(12px,3vw,16px);
+  display:grid;gap:4px;box-shadow:0 0 22px rgba(176,108,245,.25)}
+.amount span{font-size:clamp(7.5px,2vw,9.5px);letter-spacing:.24em;color:var(--muted)}
+.amount b{font-size:clamp(26px,8vw,40px);font-weight:400;color:var(--violet-bright);line-height:1.1;
+  font-variant-numeric:tabular-nums;text-shadow:0 0 22px rgba(176,108,245,.55)}
+.bank{display:grid;gap:7px;margin-top:9px}
+.brow{display:flex;width:100%;align-items:center;justify-content:space-between;gap:10px;text-align:left;
+  padding:clamp(10px,2.4vw,13px) 15px;border-radius:12px;border:1px solid rgba(176,108,245,.22);
+  background:rgba(18,8,34,.6);transition:border-color .25s, background .25s}
+button.brow:hover{border-color:var(--violet);background:rgba(45,16,84,.5)}
+.brow .k{font-size:clamp(7.5px,2vw,9.5px);letter-spacing:.2em;color:var(--muted);flex:none}
+.brow .v{font-size:clamp(10px,2.6vw,13px);letter-spacing:.06em;color:#fff;text-align:right;min-width:0;
+  word-break:break-word;font-variant-numeric:tabular-nums}
+.brow svg{width:14px;height:14px;color:var(--violet);flex:none}
+.concept{display:flex;width:100%;align-items:center;justify-content:space-between;gap:10px;
+  padding:clamp(12px,2.8vw,15px) 16px;border-radius:12px;border:1px dashed rgba(176,108,245,.55);
+  background:rgba(45,16,84,.35);transition:background .25s}
+.concept:hover{background:rgba(45,16,84,.55)}
+.concept b{font-weight:400;font-size:clamp(13px,4vw,18px);letter-spacing:.24em;color:var(--violet-bright)}
+.concept svg{width:15px;height:15px;color:var(--violet);flex:none}
 .drop{margin-top:14px;display:grid;justify-items:center;gap:8px;padding:clamp(16px,4vw,24px) 16px;border-radius:14px;
   border:1px dashed rgba(176,108,245,.5);background:rgba(28,10,52,.35);cursor:pointer;transition:background .25s, border-color .25s}
 .drop:hover{background:rgba(45,16,84,.5);border-color:var(--violet)}
@@ -305,6 +317,42 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
 .pass .row{display:flex;justify-content:space-between;gap:12px;font-size:clamp(8px,2.2vw,10.5px);letter-spacing:.1em}
 .pass .row span{color:var(--muted)}
 .pass .row b{font-weight:400;text-align:right}
+.passtabs{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:14px}
+.passtabs button{min-width:38px;padding:7px 12px;border-radius:999px;border:1px solid rgba(176,108,245,.4);
+  font-size:clamp(8.5px,2.3vw,11px);letter-spacing:.14em;color:var(--muted);transition:all .25s}
+.passtabs button[aria-current="true"]{border-color:var(--violet);color:#fff;background:rgba(109,40,217,.35);
+  box-shadow:0 0 16px rgba(176,108,245,.45)}
+.passtabs[hidden]{display:none}
+
+/* ---------- CONSULTA ---------- */
+.state{margin-top:18px;border-radius:14px;border:1px solid rgba(176,108,245,.3);background:rgba(18,8,34,.62);
+  padding:clamp(14px,3.2vw,20px);display:grid;gap:12px;text-align:left}
+.state .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.state .top b{font-weight:400;font-size:clamp(12px,3.4vw,16px);letter-spacing:.24em;color:var(--violet-bright)}
+.badge{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;flex:none;
+  font-size:clamp(7.5px,2vw,9.5px);letter-spacing:.16em;border:1px solid}
+.badge i{width:6px;height:6px;border-radius:50%;animation:pulse 1.6s ease-in-out infinite}
+.badge.wait{border-color:rgba(255,209,102,.55);color:#ffd166;background:rgba(255,209,102,.1)}
+.badge.wait i{background:#ffd166;box-shadow:0 0 9px #ffd166}
+.badge.ok{border-color:rgba(126,231,160,.55);color:#7ee7a0;background:rgba(126,231,160,.1)}
+.badge.ok i{background:#7ee7a0;box-shadow:0 0 9px #7ee7a0;animation:none}
+.track{display:grid;gap:0}
+.track .tr{display:flex;gap:11px;align-items:flex-start;position:relative;padding-bottom:14px}
+.track .tr:last-child{padding-bottom:0}
+.track .tr::before{content:"";position:absolute;left:7px;top:17px;bottom:0;width:1px;background:rgba(176,108,245,.3)}
+.track .tr:last-child::before{display:none}
+.track .dot{width:15px;height:15px;border-radius:50%;border:1px solid var(--violet);flex:none;margin-top:1px;
+  display:grid;place-items:center;background:var(--bg)}
+.track .dot::after{content:"";width:6px;height:6px;border-radius:50%;background:rgba(176,108,245,.35)}
+.track .tr.done .dot::after{background:var(--violet-bright);box-shadow:0 0 10px var(--violet-bright)}
+.track .tx b{display:block;font-weight:400;font-size:clamp(8.5px,2.2vw,10.5px);letter-spacing:.18em;color:#fff}
+.track .tr:not(.done) .tx b{color:var(--muted)}
+.track .tx span{display:block;margin-top:3px;font-size:clamp(7.5px,2vw,9.5px);letter-spacing:.08em;color:var(--muted);line-height:1.6}
+.state .srow{display:flex;justify-content:space-between;gap:12px;font-size:clamp(8.5px,2.2vw,10.5px);letter-spacing:.1em}
+.state .srow span{color:var(--muted)}
+.state .srow b{font-weight:400}
+.hintref{margin:12px 0 0;font-size:clamp(7.5px,2vw,9.5px);letter-spacing:.14em;color:rgba(185,168,207,.65);text-align:center;line-height:1.8}
+.hintref b{color:var(--violet-bright);font-weight:400}
 
 /* ---------- INFO ---------- */
 .infowrap{display:grid;gap:clamp(10px,2.4vw,14px);margin-top:18px}
@@ -397,9 +445,10 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
   <nav aria-label="Menú principal">
     <button type="button" data-nav="inicio">INICIO <em>01</em></button>
     <button type="button" data-nav="experiencia">MUCHO MÁS QUE MÚSICA <em>02</em></button>
-    <button type="button" data-nav="boletos">BOLETOS <em>03</em></button>
-    <button type="button" data-nav="info">INFO Y LUGAR <em>04</em></button>
+    <button type="button" data-nav="info">INFO Y LUGAR <em>03</em></button>
+    <button type="button" data-nav="boletos">COMPRAR BOLETO <em>→</em></button>
     <button type="button" data-nav="premios">PREMIOS <em>★</em></button>
+    <button type="button" data-nav="consulta">MI BOLETO <em>✓</em></button>
     <p class="note">SÁB 24 OCT · 9:00 PM<br>CAMPECHE · COL. BELLAVISTA<br>CUPO LIMITADO</p>
   </nav>
 </div>
@@ -478,7 +527,7 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
   </section>
 
   <!-- ===== 03 BOLETOS ===== -->
-  <section class="screen" id="s-boletos" data-kind="main" aria-label="Boletos">
+  <section class="screen" id="s-boletos" data-kind="sub" aria-label="Boletos">
     <div class="wrap center"><div class="fit">
       <p class="eyebrow" data-rv style="--d:60ms">ACCESO A LA NOCHE</p>
       <div class="rule" data-rv style="--d:140ms"></div>
@@ -507,6 +556,7 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
         <button class="cta" data-go="datos">COMPRAR BOLETO
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
         </button>
+        <button class="cta ghost" data-go="consulta">YA COMPRÉ · VER MI BOLETO</button>
       </div>
     </div></div>
   </section>
@@ -662,29 +712,44 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
         <p class="eyebrow" data-rv style="--d:60ms">PASO 2 DE 2</p>
         <div class="rule" data-rv style="--d:140ms"></div>
         <h2 class="title" data-rv style="--d:220ms">TRANSFERENCIA</h2>
-        <p class="lead" data-rv style="--d:320ms">HAZ LA TRANSFERENCIA POR EL MONTO EXACTO Y SUBE TU COMPROBANTE.</p>
       </div>
-      <div class="bank" data-rv style="--d:400ms">
-        <div class="brow"><span>BANCO</span><b>BBVA</b></div>
-        <div class="brow"><span>TITULAR</span><b>GALAXI NIGHT</b></div>
-        <div class="brow"><span>CLABE</span><b id="clabe">012 914 0000 0000 0000</b>
-          <button class="copybtn" data-copy="012914000000000000">COPIAR</button></div>
-        <div class="brow"><span>MONTO</span><b class="v" id="montoPago">$250</b></div>
-        <div class="brow"><span>CONCEPTO</span><b class="v" id="refPago">GN-0000</b>
-          <button class="copybtn" id="copyRef">COPIAR</button></div>
+
+      <div data-rv style="--d:360ms">
+        <p class="step"><i>1</i><b>TRANSFIERE ESTE MONTO</b></p>
+        <div class="amount"><span>MONTO EXACTO</span><b id="montoPago">$250</b></div>
+        <div class="bank">
+          <div class="brow"><span class="k">BANCO</span><span class="v">BBVA</span></div>
+          <div class="brow"><span class="k">TITULAR</span><span class="v">GALAXI NIGHT</span></div>
+          <button class="brow" type="button" data-copy="012914000000000000">
+            <span class="k">CLABE</span>
+            <span class="v">012 914 0000 0000 0000</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+          </button>
+        </div>
       </div>
-      <label class="drop" id="drop" data-rv style="--d:480ms">
-        <input type="file" id="file" accept="image/*,application/pdf">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
-        <b id="dropTitle">SUBIR COMPROBANTE</b>
-        <span id="dropHint">FOTO O PDF DE TU TRANSFERENCIA</span>
-      </label>
-      <p class="err" id="pErr"></p>
-      <div class="stackbtn" data-rv style="--d:540ms;margin-top:14px">
-        <button class="cta" id="enviarPago">ENVIAR COMPROBANTE
+
+      <div data-rv style="--d:440ms">
+        <p class="step"><i>2</i><b>PON ESTE CONCEPTO</b></p>
+        <button class="concept" type="button" id="copyRef">
+          <b id="refPago">GN-0000</b>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+        </button>
+      </div>
+
+      <div data-rv style="--d:520ms">
+        <p class="step"><i>3</i><b>SUBE TU COMPROBANTE</b></p>
+        <label class="drop" id="drop">
+          <input type="file" id="file" accept="image/*,application/pdf">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+          <b id="dropTitle">TOCA PARA SUBIR</b>
+          <span id="dropHint">FOTO O PDF DE TU TRANSFERENCIA</span>
+        </label>
+        <p class="err" id="pErr"></p>
+        <button class="cta" id="enviarPago" style="margin-top:6px">ENVIAR
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
         </button>
       </div>
+
       <p class="helpline" data-rv style="--d:600ms">¿ALGUNA DUDA? ESCRÍBENOS AL <b>981 000 0000</b></p>
     </div></div>
   </section>
@@ -704,9 +769,34 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
       <p class="ref" data-rv style="--d:400ms"><span>TU REFERENCIA</span><b id="refVerif">GN-0000</b></p>
       <p class="lead" data-rv style="--d:470ms">EN CUANTO EL ORGANIZADOR CONFIRME TU TRANSFERENCIA SE GENERA TU CÓDIGO DE ACCESO Y TE LLEGA POR WHATSAPP.</p>
       <div class="stackbtn" data-rv style="--d:560ms">
+        <button class="cta ghost" data-go="consulta">VER ESTADO DE MI BOLETO</button>
         <button class="cta ghost" id="simular">SIMULAR CONFIRMACIÓN (DEMO)</button>
       </div>
       <p class="helpline" data-rv style="--d:620ms">¿ALGUNA DUDA? ESCRÍBENOS AL <b>981 000 0000</b></p>
+    </div></div>
+  </section>
+
+  <!-- ===== SUB: CONSULTA ===== -->
+  <section class="screen" id="s-consulta" data-kind="sub" aria-label="Consultar mi boleto">
+    <div class="wrap"><div class="fit">
+      <div class="center">
+        <p class="eyebrow" data-rv style="--d:60ms">BOLETOS COMPRADOS</p>
+        <div class="rule" data-rv style="--d:140ms"></div>
+        <h2 class="title" data-rv style="--d:220ms">MI BOLETO</h2>
+        <p class="lead" data-rv style="--d:320ms">ESCRIBE TU REFERENCIA PARA VER EN QUÉ VA TU PAGO.</p>
+      </div>
+      <form class="form" id="formConsulta" novalidate data-rv style="--d:400ms">
+        <div class="field">
+          <label for="qRef">REFERENCIA</label>
+          <input id="qRef" placeholder="GN-A7K2P" autocomplete="off" spellcheck="false">
+        </div>
+        <p class="err" id="qErr"></p>
+        <button class="cta" type="submit">CONSULTAR
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+        </button>
+      </form>
+      <div id="resultado" hidden></div>
+      <p class="hintref" data-rv style="--d:470ms" id="hintRef">PRUEBA LA DEMO CON LA REFERENCIA <b>GN-DEMO</b></p>
     </div></div>
   </section>
 
@@ -719,21 +809,22 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
         </svg>
       </div>
       <h2 class="title" data-rv style="--d:180ms">PAGO<b>CONFIRMADO</b></h2>
+      <div class="passtabs" id="passtabs" data-rv style="--d:280ms" role="group" aria-label="Pases"></div>
       <div class="pass zoomin" data-rv style="--d:340ms">
         <div class="ph"><b>GALAXI NIGHT</b><span>SÁB 24 OCT · 9:00 PM</span></div>
         <div class="pb">
           <canvas id="qr" width="300" height="300" aria-label="Código de acceso"></canvas>
           <p class="code" id="pCode">GN-0000</p>
-          <div class="row"><span>NOMBRE</span><b id="pNombre">—</b></div>
-          <div class="row"><span>ACCESO</span><b>GENERAL</b></div>
-          <div class="row"><span>PERSONAS</span><b id="pQty">—</b></div>
-          <div class="row"><span>PAGADO</span><b id="pTotal">—</b></div>
+          <div class="row"><span>PASE</span><b id="pNum">1 DE 1</b></div>
+          <div class="row"><span>TITULAR</span><b id="pNombre">—</b></div>
+          <div class="row"><span>ACCESO</span><b>GENERAL · 1 PERSONA</b></div>
+          <div class="row"><span>REFERENCIA</span><b id="pRef">—</b></div>
         </div>
       </div>
       <div class="stackbtn" data-rv style="--d:500ms">
         <button class="cta ghost" id="copyCode">COPIAR CÓDIGO</button>
       </div>
-      <p class="smallnote" data-rv style="--d:560ms">PRESENTA ESTE CÓDIGO EN LA ENTRADA.</p>
+      <p class="smallnote" data-rv style="--d:560ms" id="passNote">UN CÓDIGO POR PERSONA. CADA QUIEN ENTRA CON EL SUYO.</p>
     </div></div>
   </section>
 </div>
@@ -774,8 +865,8 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
   document.getElementById('crowd').innerHTML=c;
 
   /* ===== ESTRUCTURA ===== */
-  var MAIN=['inicio','experiencia','boletos','info'];
-  var SUBS={premios:1,datos:1,pago:1,verificando:1,pase:1};
+  var MAIN=['inicio','experiencia','info'];
+  var SUBS={boletos:1,premios:1,datos:1,pago:1,verificando:1,pase:1,consulta:1};
   var current='inicio', busy=false, stack=[];
 
   function setVH(){
@@ -939,6 +1030,30 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
   }
   drawQR('GN-DEMO');
 
+  /* ===== PEDIDOS (demo: se guardan en este dispositivo) ===== */
+  var pedidos={};
+  function loadPedidos(){
+    try{ pedidos=JSON.parse(localStorage.getItem('gn_pedidos')||'{}')||{}; }catch(e){ pedidos={}; }
+    if(!pedidos['GN-DEMO']){
+      pedidos['GN-DEMO']={ref:'GN-DEMO',nombre:'Alex Acosta',tel:'9810000000',qty:2,total:500,
+        estado:'pagado',codigos:['GN-DEMO-01','GN-DEMO-02'],fecha:Date.now()};
+      savePedidos();
+    }
+  }
+  function savePedidos(){ try{ localStorage.setItem('gn_pedidos',JSON.stringify(pedidos)); }catch(e){} }
+  loadPedidos();
+
+  function nuevaRef(){
+    var r;
+    do{ r='GN-'+Math.random().toString(36).slice(2,7).toUpperCase(); }while(pedidos[r]);
+    return r;
+  }
+  function generarCodigos(ref,n){
+    var out=[];
+    for(var i=1;i<=n;i++) out.push(ref+'-'+(i<10?'0'+i:i));
+    return out;
+  }
+
   /* ===== FLUJO DE COMPRA ===== */
   var comprador={nombre:'',tel:''};
   function val(id){ return document.getElementById(id).value.trim(); }
@@ -949,9 +1064,15 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
     if(tl.replace(/\D/g,'').length<10){ err.textContent='EL NÚMERO NECESITA 10 DÍGITOS.'; return; }
     err.textContent='';
     comprador.nombre=n; comprador.tel=tl;
-    ref='GN-'+Math.random().toString(36).slice(2,7).toUpperCase();
+    ref=nuevaRef();
+    pedidos[ref]={ref:ref,nombre:n,tel:tl,qty:qty,total:PRECIO*qty,estado:'pendiente',codigos:[],fecha:Date.now()};
+    savePedidos();
     document.getElementById('refPago').textContent=ref;
     document.getElementById('refVerif').textContent=ref;
+    archivo=null;
+    drop.classList.remove('has');
+    document.getElementById('dropTitle').textContent='TOCA PARA SUBIR';
+    document.getElementById('dropHint').textContent='FOTO O PDF DE TU TRANSFERENCIA';
     if(document.activeElement&&document.activeElement.blur) document.activeElement.blur();
     go('pago','down');
   });
@@ -970,22 +1091,92 @@ h2.title b{display:block;font-weight:200;color:var(--violet-bright);text-shadow:
   });
   document.getElementById('enviarPago').addEventListener('click',function(){
     if(!archivo){ document.getElementById('pErr').textContent='PRIMERO SUBE TU COMPROBANTE.'; fit('pago'); return; }
+    if(pedidos[ref]){ pedidos[ref].estado='verificando'; savePedidos(); }
     go('verificando','down');
     toast('COMPROBANTE ENVIADO · '+ref);
   });
 
   document.getElementById('simular').addEventListener('click',function(){
-    var code='GN-'+Math.random().toString(36).slice(2,6).toUpperCase()+'-'+Math.floor(Math.random()*90+10);
+    var p=pedidos[ref]; if(!p) return;
+    p.estado='pagado';
+    p.codigos=generarCodigos(p.ref,p.qty);
+    savePedidos();
+    mostrarPase(p);
+    toast(p.qty>1?'SE GENERARON '+p.qty+' CÓDIGOS':'CÓDIGO GENERADO');
+  });
+
+  /* ===== PASES (un código por persona) ===== */
+  var pasesActivos=[], paseIdx=0, paseDueno='';
+  function pintarPase(){
+    var code=pasesActivos[paseIdx]||'—';
     document.getElementById('pCode').textContent=code;
-    document.getElementById('pNombre').textContent=comprador.nombre.toUpperCase()||'—';
-    document.getElementById('pQty').textContent=qty+(qty>1?' PERSONAS':' PERSONA');
-    document.getElementById('pTotal').textContent=money(PRECIO*qty);
-    drawQR(code+comprador.nombre);
+    document.getElementById('pNum').textContent=(paseIdx+1)+' DE '+pasesActivos.length;
+    drawQR(code);
+    var tabs=document.querySelectorAll('#passtabs button');
+    for(var i=0;i<tabs.length;i++) tabs[i].setAttribute('aria-current', i===paseIdx?'true':'false');
+  }
+  function mostrarPase(p){
+    pasesActivos=p.codigos.slice(); paseIdx=0; paseDueno=p.nombre;
+    var tabs=document.getElementById('passtabs'), th='';
+    for(var i=0;i<pasesActivos.length;i++) th+='<button type="button" data-i="'+i+'">PASE '+(i+1)+'</button>';
+    tabs.innerHTML=th;
+    tabs.hidden = pasesActivos.length<2;
+    document.getElementById('pNombre').textContent=(p.nombre||'—').toUpperCase();
+    document.getElementById('pRef').textContent=p.ref;
+    document.getElementById('passNote').textContent = pasesActivos.length>1
+      ? 'UN CÓDIGO POR PERSONA. CADA QUIEN ENTRA CON EL SUYO.'
+      : 'PRESENTA ESTE CÓDIGO EN LA ENTRADA.';
+    pintarPase();
     go('pase','down');
-    toast('CÓDIGO GENERADO');
+  }
+  document.getElementById('passtabs').addEventListener('click',function(e){
+    var btn=e.target.closest('button'); if(!btn) return;
+    paseIdx=parseInt(btn.dataset.i,10); pintarPase();
   });
   document.getElementById('copyCode').addEventListener('click',function(){
     copy(document.getElementById('pCode').textContent,'CÓDIGO COPIADO');
+  });
+
+  /* ===== CONSULTA POR REFERENCIA ===== */
+  var ESTADOS={
+    pendiente:{badge:'wait',txt:'SIN COMPROBANTE',paso:1},
+    verificando:{badge:'wait',txt:'EN VERIFICACIÓN',paso:2},
+    pagado:{badge:'ok',txt:'PAGADO',paso:3}
+  };
+  function pasoHTML(n,activo,titulo,desc){
+    return '<div class="tr'+(activo?' done':'')+'"><span class="dot"></span><span class="tx"><b>'+titulo+'</b><span>'+desc+'</span></span></div>';
+  }
+  document.getElementById('formConsulta').addEventListener('submit',function(e){
+    e.preventDefault();
+    var err=document.getElementById('qErr'), box=document.getElementById('resultado');
+    var r=val('qRef').toUpperCase().replace(/\s/g,'');
+    if(r.length<4){ err.textContent='ESCRIBE TU REFERENCIA COMPLETA.'; return; }
+    var p=pedidos[r];
+    if(!p){
+      err.textContent='NO ENCONTRAMOS ESA REFERENCIA.';
+      box.hidden=true; fit('consulta'); return;
+    }
+    err.textContent='';
+    var st=ESTADOS[p.estado]||ESTADOS.pendiente;
+    var html='<div class="state">'+
+      '<div class="top"><b>'+p.ref+'</b><span class="badge '+st.badge+'"><i></i>'+st.txt+'</span></div>'+
+      '<div class="track">'+
+        pasoHTML(1,st.paso>=1,'BOLETO APARTADO','Registramos tu compra a nombre de '+p.nombre+'.')+
+        pasoHTML(2,st.paso>=2,'COMPROBANTE RECIBIDO', st.paso>=2?'Estamos validando tu transferencia.':'Sube tu comprobante para continuar.')+
+        pasoHTML(3,st.paso>=3,'PAGO CONFIRMADO', st.paso>=3?'Tus códigos de acceso ya están listos.':'Cuando el organizador confirme, se generan tus códigos.')+
+      '</div>'+
+      '<div class="srow"><span>PERSONAS</span><b>'+p.qty+'</b></div>'+
+      '<div class="srow"><span>TOTAL</span><b>'+money(p.total)+'</b></div>'+
+      (st.paso>=3?'<button class="cta" type="button" id="verPases" style="margin-top:4px">VER MIS '+(p.qty>1?p.qty+' CÓDIGOS':'CÓDIGO')+'</button>'
+                 :'<p class="helpline" style="margin:4px 0 0">TE AVISAMOS POR WHATSAPP AL CONFIRMAR. DUDAS AL <b>981 000 0000</b></p>')+
+    '</div>';
+    box.innerHTML=html;
+    box.hidden=false;
+    if(document.activeElement&&document.activeElement.blur) document.activeElement.blur();
+    var vp=document.getElementById('verPases');
+    if(vp) vp.addEventListener('click',function(){ mostrarPase(p); });
+    fit('consulta');
+    setTimeout(function(){ fit('consulta'); },60);
   });
 
   /* ===== RESIZE ===== */
