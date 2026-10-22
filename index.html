@@ -378,6 +378,20 @@ button.brow:hover{border-color:var(--violet);background:rgba(45,16,84,.5)}
 .hintref{margin:12px 0 0;font-size:clamp(7.5px,2vw,9.5px);letter-spacing:.14em;color:rgba(185,168,207,.65);text-align:center;line-height:1.8}
 .hintref b{color:var(--violet-bright);font-weight:400}
 
+/* ---------- MIS BOLETOS ---------- */
+.orders{display:grid;gap:10px;margin-top:18px}
+.order{display:flex;width:100%;align-items:center;justify-content:space-between;gap:12px;text-align:left;
+  padding:clamp(12px,2.8vw,16px) clamp(13px,3vw,17px);border-radius:14px;border:1px solid rgba(176,108,245,.22);
+  background:rgba(18,8,34,.62);transition:border-color .25s, background .25s, transform .25s}
+.order:hover{border-color:var(--violet);background:rgba(45,16,84,.5);transform:translateY(-2px)}
+.order .oi{min-width:0}
+.order .oi b{display:block;font-weight:400;font-size:clamp(11px,3vw,14px);letter-spacing:.22em;color:var(--violet-bright)}
+.order .oi span{display:block;margin-top:5px;font-size:clamp(8px,2.1vw,10px);letter-spacing:.1em;color:var(--muted)}
+.order .oe{display:grid;justify-items:end;gap:7px;flex:none}
+.empty{margin-top:20px;padding:clamp(18px,4vw,26px);border-radius:14px;border:1px dashed rgba(176,108,245,.35);
+  background:rgba(18,8,34,.45);text-align:center}
+.empty p{margin:0;font-size:clamp(9px,2.4vw,11px);letter-spacing:.14em;color:var(--muted);line-height:1.8}
+
 /* ---------- INFO ---------- */
 .infowrap{display:grid;gap:clamp(10px,2.4vw,14px);margin-top:18px}
 .map{border-radius:14px;overflow:hidden;border:1px solid rgba(176,108,245,.25)}
@@ -445,6 +459,10 @@ button.brow:hover{border-color:var(--violet);background:rgba(45,16,84,.5)}
   </button>
   <div class="navbtns">
     <span id="mainBtns" class="navbtns">
+      <button class="pillbtn" id="misBtn" data-go="misboletos" aria-label="Ver boletos comprados" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9.5V7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v2.5a2.5 2.5 0 0 0 0 5V17a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-2.5a2.5 2.5 0 0 0 0-5z"/><path d="M9.5 12.5l1.8 1.8 3.4-3.6"/></svg>
+        <span class="txt">MIS BOLETOS</span>
+      </button>
       <button class="pillbtn" data-go="premios" aria-label="Ver premios">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3M9 20h6M12 14v6"/></svg>
         <span class="txt">VER PREMIOS</span>
@@ -472,7 +490,8 @@ button.brow:hover{border-color:var(--violet);background:rgba(45,16,84,.5)}
     <button type="button" data-nav="info">INFO Y LUGAR <em>03</em></button>
     <button type="button" data-nav="boletos">COMPRAR BOLETO <em>→</em></button>
     <button type="button" data-nav="premios">PREMIOS <em>★</em></button>
-    <button type="button" data-nav="consulta">MI BOLETO <em>✓</em></button>
+    <button type="button" data-nav="misboletos">MIS BOLETOS <em>✓</em></button>
+    <button type="button" data-nav="consulta">CONSULTAR REFERENCIA <em>?</em></button>
     <p class="note">SÁB 24 OCT · 9:00 PM<br>CAMPECHE · COL. BELLAVISTA<br>CUPO LIMITADO</p>
   </nav>
 </div>
@@ -809,10 +828,31 @@ button.brow:hover{border-color:var(--violet);background:rgba(45,16,84,.5)}
       <p class="ref" data-rv style="--d:400ms"><span>TU REFERENCIA</span><b id="refVerif">GN-0000</b></p>
       <p class="lead" data-rv style="--d:470ms">EN CUANTO EL ORGANIZADOR CONFIRME TU TRANSFERENCIA SE GENERA TU CÓDIGO DE ACCESO Y TE LLEGA POR WHATSAPP.</p>
       <div class="stackbtn" data-rv style="--d:560ms">
-        <button class="cta ghost" data-go="consulta">VER ESTADO DE MI BOLETO</button>
+        <button class="cta ghost" id="otroBoleto">COMPRAR OTRO BOLETO</button>
         <button class="cta ghost" id="simular">SIMULAR CONFIRMACIÓN (DEMO)</button>
       </div>
       <p class="helpline" data-rv style="--d:620ms">¿ALGUNA DUDA? ESCRÍBENOS AL <b>981 000 0000</b></p>
+    </div></div>
+  </section>
+
+  <!-- ===== SUB: MIS BOLETOS ===== -->
+  <section class="screen" id="s-misboletos" data-kind="sub" aria-label="Mis boletos">
+    <div class="wrap"><div class="fit">
+      <div class="center">
+        <p class="eyebrow" data-rv style="--d:60ms">EN ESTE DISPOSITIVO</p>
+        <div class="rule" data-rv style="--d:140ms"></div>
+        <h2 class="title" data-rv style="--d:220ms">MIS BOLETOS</h2>
+      </div>
+      <div class="orders" id="orders" data-rv style="--d:340ms"></div>
+      <div class="stackbtn" data-rv style="--d:440ms">
+        <button class="cta" id="otroBoleto2">COMPRAR OTRO BOLETO
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+        </button>
+        <button class="quiet" type="button" data-go="consulta">
+          BUSCAR POR REFERENCIA
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
     </div></div>
   </section>
 
@@ -906,7 +946,7 @@ button.brow:hover{border-color:var(--violet);background:rgba(45,16,84,.5)}
 
   /* ===== ESTRUCTURA ===== */
   var MAIN=['inicio','experiencia','info'];
-  var SUBS={boletos:1,premios:1,datos:1,pago:1,verificando:1,pase:1,consulta:1};
+  var SUBS={boletos:1,premios:1,datos:1,pago:1,verificando:1,pase:1,consulta:1,misboletos:1};
   var current='inicio', busy=false, stack=[];
 
   function setVH(){
@@ -936,6 +976,8 @@ button.brow:hover{border-color:var(--violet);background:rgba(45,16,84,.5)}
     document.body.classList.toggle('show-upcue', kind==='main' && idx>0);
     var links=document.querySelectorAll('[data-nav]');
     for(var l=0;l<links.length;l++) links[l].setAttribute('aria-current', links[l].dataset.nav===current?'true':'false');
+    var mb=document.getElementById('misBtn');
+    if(mb) mb.hidden = listaPedidos().length===0;
     document.getElementById('moon').style.transform='translate(-50%,0) translateY('+((idx<0?1:idx)*-18)+'px) scale('+(1+(idx<0?1:idx)*.035).toFixed(2)+')';
   }
   function go(id,dir,isBack){
@@ -950,7 +992,9 @@ button.brow:hover{border-color:var(--violet);background:rgba(45,16,84,.5)}
     next.classList.add('is-active');
     setChrome();
     if(id==='boletos') perforacion();
+    if(id==='misboletos') pintarOrders();
     fit(id);
+    saveEstado();
     closeMenu();
     setTimeout(function(){ busy=false; fit(id); },500);
   }
@@ -961,6 +1005,31 @@ button.brow:hover{border-color:var(--violet);background:rgba(45,16,84,.5)}
       return;
     }
     prevScreen();
+  }
+  /* si ya hay un pago en proceso, "comprar boletos" lleva a su estado */
+  function irA(id){
+    if(id==='boletos' && !comprandoNuevo){
+      var p=pedidoActivo();
+      if(p){
+        ref=p.ref; qty=p.qty; render();
+        document.getElementById('refPago').textContent=p.ref;
+        document.getElementById('refVerif').textContent=p.ref;
+        go(p.estado==='verificando'?'verificando':'pago','down');
+        return;
+      }
+    }
+    comprandoNuevo=false;
+    go(id,'down');
+  }
+  function comprarNuevo(){
+    comprandoNuevo=true;
+    archivo=null;
+    var d=document.getElementById('drop');
+    if(d){ d.classList.remove('has');
+      document.getElementById('dropTitle').textContent='TOCA PARA SUBIR';
+      document.getElementById('dropHint').textContent='FOTO O PDF DE TU TRANSFERENCIA'; }
+    qty=1; render();
+    irA('boletos');
   }
   function nextScreen(){
     if(SUBS[current]) return;
@@ -1008,8 +1077,8 @@ button.brow:hover{border-color:var(--violet);background:rgba(45,16,84,.5)}
 
   /* ===== CLICS ===== */
   document.addEventListener('click',function(e){
-    var t=e.target.closest('[data-go]'); if(t){ go(t.getAttribute('data-go'),'down'); return; }
-    var nav=e.target.closest('[data-nav]'); if(nav){ go(nav.getAttribute('data-nav'),'down'); return; }
+    var t=e.target.closest('[data-go]'); if(t){ irA(t.getAttribute('data-go')); return; }
+    var nav=e.target.closest('[data-nav]'); if(nav){ irA(nav.getAttribute('data-nav')); return; }
     if(e.target.closest('[data-close]')){ closeMenu(); return; }
     var cp=e.target.closest('[data-copy]'); if(cp){ copy(cp.getAttribute('data-copy'),'COPIADO'); return; }
   });
@@ -1083,18 +1152,40 @@ button.brow:hover{border-color:var(--violet);background:rgba(45,16,84,.5)}
   }
   drawQR('GN-DEMO');
 
-  /* ===== PEDIDOS (demo: se guardan en este dispositivo) ===== */
+  /* ===== PEDIDOS (se guardan en este dispositivo) ===== */
   var pedidos={};
+  var DEMO={ref:'GN-DEMO',nombre:'Alex Acosta',tel:'9810000000',qty:2,total:500,
+            estado:'pagado',codigos:['GN-DEMO-01','GN-DEMO-02'],fecha:0};
   function loadPedidos(){
     try{ pedidos=JSON.parse(localStorage.getItem('gn_pedidos')||'{}')||{}; }catch(e){ pedidos={}; }
-    if(!pedidos['GN-DEMO']){
-      pedidos['GN-DEMO']={ref:'GN-DEMO',nombre:'Alex Acosta',tel:'9810000000',qty:2,total:500,
-        estado:'pagado',codigos:['GN-DEMO-01','GN-DEMO-02'],fecha:Date.now()};
-      savePedidos();
-    }
   }
-  function savePedidos(){ try{ localStorage.setItem('gn_pedidos',JSON.stringify(pedidos)); }catch(e){} }
+  function savePedidos(){
+    try{ localStorage.setItem('gn_pedidos',JSON.stringify(pedidos)); }catch(e){}
+    pintarOrders();
+    setChrome();
+  }
+  function buscarPedido(r){ return pedidos[r] || (r===DEMO.ref?DEMO:null); }
+  function listaPedidos(){
+    var out=[],k;
+    for(k in pedidos) if(pedidos.hasOwnProperty(k)) out.push(pedidos[k]);
+    out.sort(function(a,b){ return (b.fecha||0)-(a.fecha||0); });
+    return out;
+  }
+  function pedidoActivo(){
+    var l=listaPedidos();
+    for(var i=0;i<l.length;i++) if(l[i].estado==='pendiente'||l[i].estado==='verificando') return l[i];
+    return null;
+  }
   loadPedidos();
+
+  /* ===== MEMORIA DE PANTALLA (sobrevive a recargar) ===== */
+  var comprandoNuevo=false;
+  function saveEstado(){
+    try{ localStorage.setItem('gn_estado',JSON.stringify({pantalla:current,ref:ref,qty:qty,pila:stack})); }catch(e){}
+  }
+  function loadEstado(){
+    try{ return JSON.parse(localStorage.getItem('gn_estado')||'null'); }catch(e){ return null; }
+  }
 
   function nuevaRef(){
     var r;
@@ -1169,6 +1260,7 @@ button.brow:hover{border-color:var(--violet);background:rgba(45,16,84,.5)}
     for(var i=0;i<tabs.length;i++) tabs[i].setAttribute('aria-current', i===paseIdx?'true':'false');
   }
   function mostrarPase(p){
+    ref=p.ref; qty=p.qty||1; render();
     pasesActivos=p.codigos.slice(); paseIdx=0; paseDueno=p.nombre;
     var tabs=document.getElementById('passtabs'), th='';
     for(var i=0;i<pasesActivos.length;i++) th+='<button type="button" data-i="'+i+'">PASE '+(i+1)+'</button>';
@@ -1196,6 +1288,37 @@ button.brow:hover{border-color:var(--violet);background:rgba(45,16,84,.5)}
     verificando:{badge:'wait',txt:'EN VERIFICACIÓN',paso:2},
     pagado:{badge:'ok',txt:'PAGADO',paso:3}
   };
+
+  /* ===== MIS BOLETOS ===== */
+  function pintarOrders(){
+    var cont=document.getElementById('orders'); if(!cont) return;
+    var l=listaPedidos();
+    if(!l.length){
+      cont.innerHTML='<div class="empty"><p>AÚN NO HAS COMPRADO BOLETOS EN ESTE DISPOSITIVO.</p></div>';
+      return;
+    }
+    var html='';
+    for(var i=0;i<l.length;i++){
+      var p=l[i], st=ESTADOS[p.estado]||ESTADOS.pendiente;
+      html+='<button class="order" type="button" data-ref="'+p.ref+'">'+
+        '<span class="oi"><b>'+p.ref+'</b><span>'+p.qty+(p.qty>1?' PERSONAS · ':' PERSONA · ')+money(p.total)+'</span></span>'+
+        '<span class="oe"><span class="badge '+st.badge+'"><i></i>'+st.txt+'</span></span>'+
+      '</button>';
+    }
+    cont.innerHTML=html;
+  }
+  document.getElementById('orders').addEventListener('click',function(e){
+    var btn=e.target.closest('[data-ref]'); if(!btn) return;
+    var p=buscarPedido(btn.dataset.ref); if(!p) return;
+    if(p.estado==='pagado'){ mostrarPase(p); return; }
+    ref=p.ref; qty=p.qty; render();
+    document.getElementById('refPago').textContent=p.ref;
+    document.getElementById('refVerif').textContent=p.ref;
+    go(p.estado==='verificando'?'verificando':'pago','down');
+  });
+  document.getElementById('otroBoleto').addEventListener('click',comprarNuevo);
+  document.getElementById('otroBoleto2').addEventListener('click',comprarNuevo);
+  pintarOrders();
   function pasoHTML(n,activo,titulo,desc){
     return '<div class="tr'+(activo?' done':'')+'"><span class="dot"></span><span class="tx"><b>'+titulo+'</b><span>'+desc+'</span></span></div>';
   }
@@ -1204,7 +1327,7 @@ button.brow:hover{border-color:var(--violet);background:rgba(45,16,84,.5)}
     var err=document.getElementById('qErr'), box=document.getElementById('resultado');
     var r=val('qRef').toUpperCase().replace(/\s/g,'');
     if(r.length<4){ err.textContent='ESCRIBE TU REFERENCIA COMPLETA.'; return; }
-    var p=pedidos[r];
+    var p=buscarPedido(r);
     if(!p){
       err.textContent='NO ENCONTRAMOS ESA REFERENCIA.';
       box.hidden=true; fit('consulta'); return;
@@ -1243,11 +1366,42 @@ button.brow:hover{border-color:var(--violet);background:rgba(45,16,84,.5)}
   if(window.visualViewport) window.visualViewport.addEventListener('resize',onResize);
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(refit);
 
-  /* ===== ARRANQUE ===== */
+  /* ===== ARRANQUE (retoma donde se quedó) ===== */
   setVH();
-  document.getElementById('s-inicio').classList.add('is-active');
+  var st=loadEstado(), inicial='inicio';
+  if(st && st.pantalla && document.getElementById('s-'+st.pantalla)){
+    var necesitaRef={pago:1,verificando:1,pase:1,datos:1};
+    var p = st.ref ? buscarPedido(st.ref) : null;
+    if(!necesitaRef[st.pantalla] || p){
+      inicial=st.pantalla;
+      if(p){
+        ref=p.ref; qty=p.qty||1;
+        document.getElementById('refPago').textContent=p.ref;
+        document.getElementById('refVerif').textContent=p.ref;
+        if(st.pantalla==='pase' && p.codigos && p.codigos.length){
+          pasesActivos=p.codigos.slice(); paseIdx=0;
+          var tabs=document.getElementById('passtabs'), th='';
+          for(var ti2=0;ti2<pasesActivos.length;ti2++) th+='<button type="button" data-i="'+ti2+'">PASE '+(ti2+1)+'</button>';
+          tabs.innerHTML=th; tabs.hidden=pasesActivos.length<2;
+          document.getElementById('pNombre').textContent=(p.nombre||'—').toUpperCase();
+          document.getElementById('pRef').textContent=p.ref;
+          pintarPase();
+        }
+        if(st.pantalla==='pago' && p.estado!=='pendiente') inicial='verificando';
+      } else if(st.qty){ qty=st.qty; }
+      if(st.pila && st.pila.length) stack=st.pila.slice();
+    }
+  }
+  render();
+  current=inicial;
+  document.getElementById('s-'+inicial).classList.add('is-active');
   setChrome();
-  requestAnimationFrame(function(){ fit('inicio'); setTimeout(function(){ fit('inicio'); },350); });
+  if(inicial==='misboletos') pintarOrders();
+  requestAnimationFrame(function(){
+    if(inicial==='boletos') perforacion();
+    fit(inicial);
+    setTimeout(function(){ if(inicial==='boletos') perforacion(); fit(inicial); },350);
+  });
 })();
 </script>
 </body>
