@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>Galaxi Night</title>
+<link rel="preload" as="image" href="img/fondo_evento.jpg">
+<style>
+/* =======================================================================
+   GALAXI NIGHT
+   - Barra superior FIJA (igual en todas las pantallas)
+   - Cada pantalla se escala para caber COMPLETA en el celular
+   - Los botones que todavia no funcionan se identifican al tocarlos
+   ======================================================================= */
+
+*{box-sizing:border-box;}
+
+html,body{
+  margin:0; padding:0;
+  height:100%;
+  background:#000;
+  overflow:hidden;                 /* el scroll vive en .screens */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+img{display:block; width:100%; height:auto; -webkit-user-drag:none; user-select:none;}
+button{font:inherit; color:inherit; background:none; border:none; padding:0; -webkit-tap-highlight-color:transparent;}
+
+/* ---------- ESCALA GLOBAL --------------------------------------------
+   --fw = ancho del "lienzo" del diseno.
+   Se toma el MENOR entre: ancho del celular, 430px y el ancho que
+   permite que la pantalla mas alta quepa completa en el alto visible.
+   Asi nunca se corta nada ni se ve gigante, en cualquier celular.
+   2.31 = alto total del diseno (barra + contenido) dividido entre su ancho.
+--------------------------------------------------------------------- */
+:root{
+  --vh: 100vh;
+  --maxw: 430px;
+  --ratio: 2.12;
+  --fw: min(100vw, var(--maxw), calc(var(--vh) / var(--ratio)));
+  --hh: calc(var(--fw) * 0.1345);   /* alto de la barra superior */
+  --violet: #a06bdb;
+}
+@supports (height: 100dvh){ :root{ --vh: 100dvh; } }
+
+/* ---------- BARRA SUPERIOR FIJA -------------------------------------- */
+.topbar{
+  position:fixed; top:0; left:0; right:0;
+  height:var(--hh);
+  z-index:120;
+  background:#000;
+  border-bottom:1px solid rgba(160,107,219,.18);
+  display:flex; justify-content:center; align-items:center;
+}
+.topbar-inner{
+  width:var(--fw);
+  height:100%;
+  padding:0 5%;
+  display:flex; align-items:center; justify-content:space-between; gap:3%;
+}
+.topbar .logo{width:36%;}
+.btn-premios{width:30%; cursor:pointer; transition:transform .15s ease, filter .15s ease;}
+.btn-premios:hover{filter:brightness(1.2);}
+.btn-premios:active{transform:scale(.95);}
+.btn-menu{width:5.8%; min-width:16px; cursor:pointer; position:relative; transition:transform .15s ease, filter .15s ease;}
+.btn-menu:hover{filter:brightness(1.3);}
+.btn-menu:active{transform:scale(.9);}
+.btn-menu::after{content:''; position:absolute; inset:-16px;}   /* area tactil comoda */
+
+/* ---------- CONTENEDOR DE PANTALLAS ---------------------------------- */
+.screens{
+  position:fixed;
+  top:var(--hh); left:0; right:0; bottom:0;
+  overflow-y:scroll; overflow-x:hidden;
+  scroll-snap-type: y mandatory;
+  scroll-behavior:smooth;
+  overscroll-behavior-y:contain;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.screens::-webkit-scrollbar{display:none;}
+
+.screen{
+  height:100%;
+  width:100%;
+  scroll-snap-align:start;
+  scroll-snap-stop:always;
+  display:flex; align-items:center; justify-content:center;
+  background:#000;
+  position:relative;
+}
+.frame{
+  width:var(--fw);
+  height:100%;
+  position:relative;
+  background:#030005;
+  display:flex; flex-direction:column; justify-content:center;
+  /* animacion de entrada */
+  opacity:0; transform:translateY(34px);
+  transition:opacity .7s cubic-bezier(.22,.9,.32,1), transform .7s cubic-bezier(.22,.9,.32,1);
+  will-change:opacity, transform;
+}
+.screen.in-view .frame{opacity:1; transform:translateY(0);}
+
+/* El bloque inferior es flexible: absorbe el alto sobrante del celular,
+   asi la pantalla llena el ancho disponible sin cortar nada importante. */
+.flexfoot{flex:1 1 auto; position:relative; overflow:hidden;
+  min-height:calc(var(--fw)*.40); max-height:calc(var(--fw)*.68);}
+.flexfoot img{width:100%; height:100%; object-fit:cover;}
+
+/* ---------- PANTALLA 1 ----------------------------------------------- */
+.hero{flex:0 0 auto; aspect-ratio:900/1026;}
+.info-block{flex:0 0 auto; background:#000; padding:5.5% 0 6.5%; display:flex; flex-direction:column; align-items:center;}
+.info-row{width:88%; display:flex; align-items:center; justify-content:space-between; margin-bottom:6.5%;}
+.info-row img{width:auto;}
+.info-row .i-fecha{width:25%;}
+.info-row .i-lugar{width:32%;}
+.info-row .i-hora{width:23%;}
+.info-row .sep{width:1px; height:calc(var(--fw)*.085); background:linear-gradient(to bottom,transparent,rgba(160,107,219,.6),transparent);}
+
+.btn-boletos{display:block; width:75%; cursor:pointer; transition:transform .15s ease, filter .15s ease;}
+.btn-boletos:hover{filter:brightness(1.15);}
+.btn-boletos:active{transform:scale(.97);}
+.btn-boletos img{aspect-ratio:720/127;}
+
+.foot1 img{object-position:center 44%;}
+
+/* ---------- PANTALLA 2 ----------------------------------------------- */
+.stage{flex:0 0 auto; aspect-ratio:706/645;}
+.cards{
+  flex:0 0 auto;
+  background:#000;
+  display:grid; grid-template-columns:repeat(3,1fr); gap:2.2%;
+  padding:4.6% 4.8% 0;
+}
+.cards img{border-radius:10px;}
+.foot2{margin-top:3%;}
+.foot2 img{object-position:center 22%;}
+
+/* zonas tocables sobre elementos dibujados dentro de una imagen */
+.hot{position:absolute; cursor:pointer; border-radius:999px;}
+.hot-boletos2{left:12%; top:2%; width:76.5%; height:27%;}
+.hot-abajo1{left:25%; top:22%; width:50%; height:46%;}
+.hot-abajo2{left:30%; top:42%; width:40%; height:40%;}
+.hot:active{background:rgba(160,107,219,.10);}
+
+/* ---------- MENU LATERAL --------------------------------------------- */
+.backdrop{
+  position:fixed; inset:0; z-index:130;
+  background:rgba(0,0,0,.65); backdrop-filter:blur(2px);
+  opacity:0; pointer-events:none; transition:opacity .3s ease;
+}
+.backdrop.open{opacity:1; pointer-events:auto;}
+
+.drawer{
+  position:fixed; top:0; right:0; bottom:0; z-index:140;
+  width:min(78vw, 320px);
+  background:linear-gradient(160deg,#0b0312 0%,#050008 100%);
+  border-left:1px solid rgba(160,107,219,.3);
+  transform:translateX(100%);
+  transition:transform .38s cubic-bezier(.22,.9,.32,1);
+  padding:26px 22px;
+  display:flex; flex-direction:column;
+  overflow-y:auto;
+}
+.drawer.open{transform:translateX(0);}
+.drawer h2{
+  margin:0 0 4px; font-size:12px; letter-spacing:.32em; color:#fff; font-weight:600;
+}
+.drawer .sub{margin:0 0 22px; font-size:10px; letter-spacing:.18em; color:#7b6b8c;}
+.drawer-close{position:absolute; top:20px; right:20px; font-size:22px; line-height:1; color:#b98fe4; cursor:pointer;}
+.drawer a, .drawer .nav-item{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:14px 0; border-bottom:1px solid rgba(160,107,219,.14);
+  color:#e9e2f3; font-size:12.5px; letter-spacing:.2em; text-decoration:none; cursor:pointer;
+  transition:color .2s ease, padding-left .2s ease;
+}
+.drawer a:hover, .drawer .nav-item:hover{color:var(--violet); padding-left:6px;}
+.tag{
+  font-size:8.5px; letter-spacing:.14em; padding:3px 7px; border-radius:999px;
+  border:1px solid rgba(160,107,219,.45); color:#b98fe4; white-space:nowrap;
+}
+.tag.ok{border-color:rgba(120,220,170,.45); color:#79dcaa;}
+.drawer .note{margin-top:auto; padding-top:22px; font-size:9.5px; letter-spacing:.1em; color:#6b5c7d; line-height:1.7;}
+
+/* ---------- AVISO (toast) -------------------------------------------- */
+.toast{
+  position:fixed; left:50%; bottom:26px; z-index:200;
+  transform:translate(-50%, 24px);
+  max-width:min(88vw, 380px);
+  background:rgba(16,4,26,.96);
+  border:1px solid rgba(160,107,219,.5);
+  box-shadow:0 0 24px rgba(160,107,219,.25);
+  border-radius:12px;
+  padding:12px 16px;
+  color:#efe8f7; font-size:12.5px; line-height:1.5; letter-spacing:.04em;
+  opacity:0; pointer-events:none;
+  transition:opacity .25s ease, transform .25s ease;
+}
+.toast.show{opacity:1; transform:translate(-50%,0);}
+.toast b{color:#c89bf0; letter-spacing:.1em;}
+
+@media (prefers-reduced-motion: reduce){
+  .frame{transition:none; opacity:1; transform:none;}
+  .screens{scroll-behavior:auto;}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== BARRA FIJA (no cambia nunca) ===================== -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <img class="logo" src="img/logo.png" alt="Galaxi Night">
+    <button class="btn-premios pending" data-label="VER PREMIOS">
+      <img src="img/boton_ver_premios.jpg" alt="Ver premios">
+    </button>
+    <button class="btn-menu" id="menuBtn" aria-label="Abrir menú">
+      <img src="img/menu.png" alt="">
+    </button>
+  </div>
+</header>
+
+<!-- ===================== PANTALLAS ===================== -->
+<main class="screens" id="screens">
+
+  <!-- ---------- PANTALLA 1 ---------- -->
+  <section class="screen" id="s1">
+    <div class="frame">
+      <img class="hero" src="img/fondo_evento.jpg" fetchpriority="high"
+           alt="Galaxi Night — Por primera vez en Campeche">
+
+      <div class="info-block">
+        <div class="info-row">
+          <img class="i-fecha" src="img/fecha.png" alt="Sábado 24 Oct">
+          <span class="sep"></span>
+          <img class="i-lugar" src="img/ubicacion.png" alt="Campeche, Col. Bellavista">
+          <span class="sep"></span>
+          <img class="i-hora" src="img/horario.png" alt="9:00 PM a 3:00 AM">
+        </div>
+        <button class="btn-boletos pending" data-label="COMPRAR BOLETOS">
+          <img src="img/boton_comprar.jpg" alt="Comprar boletos">
+        </button>
+      </div>
+
+      <div class="foot1 flexfoot">
+        <img src="img/fondo_inferior.jpg" alt="">
+        <div class="hot hot-abajo1" data-goto="#s2" aria-label="Ir a la siguiente pantalla"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- PANTALLA 2 ---------- -->
+  <section class="screen" id="s2">
+    <div class="frame">
+      <img class="stage" src="img/fondo_escenario.jpg" loading="lazy" alt="Mucho más que música">
+
+      <div class="cards">
+        <img src="img/card_dj.jpg" loading="lazy" alt="DJ en vivo">
+        <img src="img/card_disfraces.jpg" loading="lazy" alt="Concurso de disfraces">
+        <img src="img/card_bebidas.jpg" loading="lazy" alt="Bebidas especiales">
+        <img src="img/card_sonido.jpg" loading="lazy" alt="Sonido profesional">
+        <img src="img/card_dinamicas.jpg" loading="lazy" alt="Dinámicas y sorpresas">
+        <img src="img/card_ambientacion.jpg" loading="lazy" alt="Ambientación temática">
+      </div>
+
+      <div class="foot2 flexfoot">
+        <img src="img/fondo_inferior2.jpg" loading="lazy" alt="">
+        <div class="hot hot-boletos2 pending" data-label="COMPRAR BOLETOS"></div>
+        <div class="hot hot-abajo2 pending" data-label="DESLIZA HACIA ABAJO (pantalla 3)"></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== MENU ===================== -->
+<div class="backdrop" id="backdrop"></div>
+<nav class="drawer" id="drawer" aria-hidden="true">
+  <span class="drawer-close" id="drawerClose" role="button" aria-label="Cerrar">&times;</span>
+  <h2>MENÚ</h2>
+  <p class="sub">GALAXI NIGHT</p>
+
+  <a href="#s1" data-goto="#s1">INICIO <span class="tag ok">LISTO</span></a>
+  <a href="#s2" data-goto="#s2">LA EXPERIENCIA <span class="tag ok">LISTO</span></a>
+  <div class="nav-item pending" data-label="PREMIOS">PREMIOS <span class="tag">PENDIENTE</span></div>
+  <div class="nav-item pending" data-label="BOLETOS">BOLETOS <span class="tag">PENDIENTE</span></div>
+  <div class="nav-item pending" data-label="UBICACIÓN">UBICACIÓN <span class="tag">PENDIENTE</span></div>
+
+  <p class="note">Las opciones marcadas como PENDIENTE todavía no tienen pantalla ni enlace conectado.</p>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var screens   = document.querySelectorAll('.screen');
+  var container = document.getElementById('screens');
+  var toastEl   = document.getElementById('toast');
+  var drawer    = document.getElementById('drawer');
+  var backdrop  = document.getElementById('backdrop');
+  var toastTimer;
+
+  /* ---- animación de entrada de cada pantalla (al bajar y al subir) ---- */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      e.target.classList.toggle('in-view', e.isIntersecting && e.intersectionRatio > 0.5);
+    });
+  }, {root: container, threshold:[0, 0.5, 1]});
+  screens.forEach(function(s){ io.observe(s); });
+
+  /* ---- aviso para lo que aún no funciona ---- */
+  function aviso(nombre){
+    toastEl.innerHTML = '<b>' + nombre + '</b> — botón identificado, todavía sin función conectada.';
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 2600);
+  }
+
+  document.addEventListener('click', function(ev){
+    var pend = ev.target.closest('.pending');
+    if(pend){ ev.preventDefault(); aviso(pend.dataset.label || 'ESTE BOTÓN'); return; }
+
+    var go = ev.target.closest('[data-goto]');
+    if(go){
+      ev.preventDefault();
+      var t = document.querySelector(go.dataset.goto);
+      if(t) t.scrollIntoView({behavior:'smooth'});
+      cerrarMenu();
+    }
+  });
+
+  /* ---- menú lateral ---- */
+  function abrirMenu(){
+    drawer.classList.add('open'); backdrop.classList.add('open');
+    drawer.setAttribute('aria-hidden','false');
+  }
+  function cerrarMenu(){
+    drawer.classList.remove('open'); backdrop.classList.remove('open');
+    drawer.setAttribute('aria-hidden','true');
+  }
+  document.getElementById('menuBtn').addEventListener('click', abrirMenu);
+  document.getElementById('drawerClose').addEventListener('click', cerrarMenu);
+  backdrop.addEventListener('click', cerrarMenu);
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') cerrarMenu(); });
+
+  /* ---- teclado: flechas para cambiar de pantalla ---- */
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowDown' || e.key === 'PageDown'){ e.preventDefault(); mover(1); }
+    if(e.key === 'ArrowUp'   || e.key === 'PageUp'){   e.preventDefault(); mover(-1); }
+  });
+  function mover(dir){
+    var i = Math.round(container.scrollTop / container.clientHeight) + dir;
+    i = Math.max(0, Math.min(screens.length - 1, i));
+    screens[i].scrollIntoView({behavior:'smooth'});
+  }
+})();
+</script>
+
+</body>
+</html>
